@@ -95,9 +95,9 @@ export interface MockState {
   currentUserId: string | null;
 }
 
-// v2: aggiunge settings.certificate_grace_days — bump per forzare il
-// reseed di eventuale stato demo salvato prima di questo campo.
-const STORAGE_KEY = 'se-mock-state-v2';
+// v3: aggiunge l'account cliente demo pre-creato con abbonamento attivo —
+// bump per forzare il reseed di eventuale stato demo precedente.
+const STORAGE_KEY = 'se-mock-state-v3';
 
 function uuid(): string {
   return crypto.randomUUID();
@@ -183,13 +183,25 @@ function seedPlans(): Plan[] {
   ];
 }
 
-function seedAdminAndStaff(): { authUsers: MockAuthUser[]; profiles: MockProfile[] } {
+function seedAccounts(): {
+  authUsers: MockAuthUser[];
+  profiles: MockProfile[];
+  subscriptions: MockSubscription[];
+  certificates: MockCertificate[];
+  memberId: string;
+} {
   const adminId = uuid();
   const staffId = uuid();
+  const memberId = uuid();
+  const today = now();
+
+  const memberSubscriptionId = uuid();
+
   return {
     authUsers: [
       { id: adminId, email: 'admin@demo.steelelite.it', password: 'demo1234', disabled: false },
       { id: staffId, email: 'staff@demo.steelelite.it', password: 'demo1234', disabled: false },
+      { id: memberId, email: 'cliente@demo.steelelite.it', password: 'demo1234', disabled: false },
     ],
     profiles: [
       {
@@ -202,7 +214,7 @@ function seedAdminAndStaff(): { authUsers: MockAuthUser[]; profiles: MockProfile
         phone: null,
         address: null,
         photo_path: null,
-        created_at: now(),
+        created_at: today,
       },
       {
         id: staffId,
@@ -214,20 +226,69 @@ function seedAdminAndStaff(): { authUsers: MockAuthUser[]; profiles: MockProfile
         phone: null,
         address: null,
         photo_path: null,
-        created_at: now(),
+        created_at: today,
+      },
+      {
+        id: memberId,
+        role: 'member',
+        first_name: 'Cliente',
+        last_name: 'Demo',
+        fiscal_code: 'DMOCLT85M01H501X',
+        birth_date: '1985-08-01',
+        phone: '3331234567',
+        address: 'Via Udine 10, Racale (LE)',
+        photo_path: null,
+        created_at: today,
       },
     ],
+    subscriptions: [
+      {
+        id: memberSubscriptionId,
+        member_id: memberId,
+        // Collegato al primo piano seedato (Palestra Open — Mensile), impostato
+        // da seedState() qui sotto per evitare un ordine di creazione fragile.
+        plan_id: '',
+        status: 'active',
+        start_date: today.slice(0, 10),
+        end_date: null, // valorizzato da seedState() in base alla durata del piano
+        sessions_remaining: null,
+        stripe_checkout_session_id: null,
+        created_at: today,
+      },
+    ],
+    certificates: [
+      {
+        id: uuid(),
+        member_id: memberId,
+        file_path: '',
+        expiry_date: '2027-12-31',
+        status: 'approved',
+        reviewed_by: adminId,
+        reviewed_at: today,
+        notes: null,
+        created_at: today,
+      },
+    ],
+    memberId,
   };
 }
 
 export function seedState(): MockState {
-  const { authUsers, profiles } = seedAdminAndStaff();
+  const plans = seedPlans();
+  const { authUsers, profiles, subscriptions, certificates } = seedAccounts();
+
+  const memberPlan = plans[0]; // Palestra Open — Mensile
+  subscriptions[0].plan_id = memberPlan.id;
+  const end = new Date();
+  end.setDate(end.getDate() + (memberPlan.duration_days ?? 30));
+  subscriptions[0].end_date = end.toISOString().slice(0, 10);
+
   return {
     authUsers,
     profiles,
-    plans: seedPlans(),
-    subscriptions: [],
-    certificates: [],
+    plans,
+    subscriptions,
+    certificates,
     contracts: [],
     otps: [],
     accessLogs: [],

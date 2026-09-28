@@ -4,15 +4,24 @@
   @if (!loading() && profile()) {
     <div class="header">
       @if (photoUrl()) {
-        <img class="photo" [src]="photoUrl()" alt="" />
+        <img class="photo" [src]="photoUrl()" alt="" (click)="togglePhotoZoom()" />
       } @else {
         <div class="photo-placeholder">{{ t.noPhoto }}</div>
       }
       <div>
         <h1>{{ profile()?.first_name }} {{ profile()?.last_name }}</h1>
         <p class="meta">{{ profile()?.fiscal_code }} · {{ profile()?.phone }}</p>
+        @if (photoUrl()) {
+          <button class="remove-photo" (click)="removePhoto()">{{ t.removePhoto }}</button>
+        }
       </div>
     </div>
+
+    @if (photoExpanded() && photoUrl()) {
+      <div class="photo-lightbox" (click)="togglePhotoZoom()">
+        <img [src]="photoUrl()" alt="" />
+      </div>
+    }
 
     <section>
       <h2>{{ t.subscriptions }}</h2>

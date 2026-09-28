@@ -53,6 +53,7 @@ export class AdminClientDetailComponent implements OnInit {
   readonly contracts = signal<ContractRow[]>([]);
   readonly certificate = signal<CertificateRow | null>(null);
   readonly accessLogs = signal<AccessLogRow[]>([]);
+  readonly photoExpanded = signal(false);
 
   private memberId = '';
 
@@ -159,5 +160,21 @@ export class AdminClientDetailComponent implements OnInit {
 
   planName(sub: SubscriptionRow): string {
     return sub.plans?.name ?? '—';
+  }
+
+  togglePhotoZoom(): void {
+    if (this.photoUrl()) {
+      this.photoExpanded.update((v) => !v);
+    }
+  }
+
+  async removePhoto(): Promise<void> {
+    if (environment.mock) {
+      this.mock.deletePhoto(this.memberId);
+    } else {
+      await this.supabase.client.from('profiles').update({ photo_path: null }).eq('id', this.memberId);
+    }
+    this.photoUrl.set(null);
+    this.profile.update((p) => (p ? { ...p, photo_path: null } : p));
   }
 }

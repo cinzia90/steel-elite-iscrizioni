@@ -2,7 +2,7 @@
   @if (resultData()) {
     <div class="result-overlay" [class.granted]="resultData()?.result === 'granted'" [class.denied]="resultData()?.result === 'denied'">
       @if (resultData()?.photoUrl) {
-        <img class="result-photo" [src]="resultData()?.photoUrl" alt="" />
+        <img class="result-photo" [src]="resultData()?.photoUrl" alt="" (click)="togglePhotoZoom()" />
       }
       <h1>{{ resultData()?.result === 'granted' ? t.granted : t.denied }}</h1>
       <p class="member-name">{{ resultData()?.memberName }}</p>
@@ -16,6 +16,12 @@
       }
       <button (click)="scanAgainNow()">{{ t.scanAgain }}</button>
     </div>
+
+    @if (photoZoomed() && resultData()?.photoUrl) {
+      <div class="photo-lightbox" (click)="togglePhotoZoom()">
+        <img [src]="resultData()?.photoUrl" alt="" />
+      </div>
+    }
   } @else {
     <h1>{{ t.title }}</h1>
 

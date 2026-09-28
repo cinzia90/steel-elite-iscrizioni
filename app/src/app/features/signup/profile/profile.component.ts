@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { it } from '../../../core/i18n/it';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   readonly t = it.signup.profile;
 
   firstName = '';
@@ -29,6 +29,10 @@ export class ProfileComponent {
   readonly photoPreviewUrl = signal<string | null>(null);
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  // true se il member ha già un abbonamento: sta ricaricando la foto (o
+  // aggiornando i dati) dopo l'iscrizione, non durante il flusso iniziale —
+  // dopo il salvataggio si torna alla tessera invece che al certificato.
+  readonly alreadySubscribed = signal(false);
 
   constructor(
     private readonly auth: AuthService,
@@ -44,7 +48,30 @@ export class ProfileComponent {
       this.birthDate = profile.birth_date ?? '';
       this.phone = profile.phone ?? '';
       this.address = profile.address ?? '';
+      if (profile.photo_path) {
+        this.photoPreviewUrl.set(null);
+      }
     }
+  }
+
+  async ngOnInit(): Promise<void> {
+    const userId = this.auth.user()?.id;
+    if (!userId) {
+      return;
+    }
+
+    if (environment.mock) {
+      this.alreadySubscribed.set(!!this.mock.getLatestSubscription(userId));
+      return;
+    }
+
+    const { data } = await this.supabase.client
+      .from('subscriptions')
+      .select('id')
+      .eq('member_id', userId)
+      .limit(1)
+      .maybeSingle();
+    this.alreadySubscribed.set(!!data);
   }
 
   onPhotoSelected(event: Event): void {
@@ -52,6 +79,10 @@ export class ProfileComponent {
     const file = input.files?.[0] ?? null;
     this.photoFile = file;
     this.photoPreviewUrl.set(file ? URL.createObjectURL(file) : null);
+  }
+
+  private nextRoute(): string {
+    return this.alreadySubscribed() ? '/tessera' : '/iscriviti/certificato';
   }
 
   async submit(): Promise<void> {
@@ -104,7 +135,7 @@ export class ProfileComponent {
         }
       }
 
-      this.router.navigateByUrl('/iscriviti/certificato');
+      this.router.navigateByUrl(this.nextRoute());
     } catch {
       this.errorMessage.set(this.t.errorGeneric);
     } finally {

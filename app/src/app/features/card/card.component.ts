@@ -42,6 +42,11 @@ export class CardComponent implements OnInit, OnDestroy {
   readonly photoUrl = signal<string | null>(null);
   readonly qrDataUrl = signal<string | null>(null);
   readonly secondsRemaining = signal(REFRESH_INTERVAL_SECONDS);
+  // Mostrato solo in modalità demo per poter incollare il token su jwt.io e
+  // controllare i dati inseriti: mai esposto fuori da environment.mock.
+  readonly rawToken = signal<string | null>(null);
+  readonly isMock = environment.mock;
+  readonly tokenCopied = signal(false);
   // Valorizzato solo durante la finestra di tolleranza per il certificato
   // medico mancante: mostra un promemoria non bloccante sopra il QR.
   readonly certificateReminderDate = signal<string | null>(null);
@@ -248,6 +253,7 @@ export class CardComponent implements OnInit, OnDestroy {
     if (environment.mock) {
       const userId = this.auth.user()?.id;
       const token = userId ? this.mock.issueAccessToken(userId) : null;
+      this.rawToken.set(token);
       this.qrDataUrl.set(token ? await QRCode.toDataURL(token, { margin: 1, width: 280 }) : null);
       return;
     }
@@ -263,6 +269,16 @@ export class CardComponent implements OnInit, OnDestroy {
     }
 
     this.qrDataUrl.set(await QRCode.toDataURL(data.token, { margin: 1, width: 280 }));
+  }
+
+  async copyToken(): Promise<void> {
+    const token = this.rawToken();
+    if (!token) {
+      return;
+    }
+    await navigator.clipboard.writeText(token);
+    this.tokenCopied.set(true);
+    setTimeout(() => this.tokenCopied.set(false), 2000);
   }
 
   get progressPercent(): number {

@@ -44,6 +44,7 @@ export class CheckInComponent implements OnDestroy {
   readonly manualMode = signal(false);
   readonly resultData = signal<CheckinResponse | null>(null);
   readonly errorMessage = signal<string | null>(null);
+  readonly photoZoomed = signal(false);
 
   manualQuery = '';
   readonly manualResults = signal<MemberSearchResult[]>([]);
@@ -139,8 +140,12 @@ export class CheckInComponent implements OnDestroy {
 
   private showResult(data: CheckinResponse): void {
     this.resultData.set(data);
+    this.photoZoomed.set(false);
     this.playFeedback(data.result === 'granted');
+    this.armResultTimeout();
+  }
 
+  private armResultTimeout(): void {
     if (this.resultTimeout) {
       clearTimeout(this.resultTimeout);
     }
@@ -150,11 +155,26 @@ export class CheckInComponent implements OnDestroy {
     }, RESULT_DISPLAY_MS);
   }
 
+  // Con la foto ingrandita per l'identificazione, lo staff ha bisogno di più
+  // dei 3 secondi standard: mettiamo in pausa il ritorno automatico allo
+  // scanner finché non richiude lo zoom.
+  togglePhotoZoom(): void {
+    const next = !this.photoZoomed();
+    this.photoZoomed.set(next);
+    if (next && this.resultTimeout) {
+      clearTimeout(this.resultTimeout);
+      this.resultTimeout = null;
+    } else if (!next) {
+      this.armResultTimeout();
+    }
+  }
+
   scanAgainNow(): void {
     if (this.resultTimeout) {
       clearTimeout(this.resultTimeout);
     }
     this.resultData.set(null);
+    this.photoZoomed.set(false);
     this.processing = false;
   }
 

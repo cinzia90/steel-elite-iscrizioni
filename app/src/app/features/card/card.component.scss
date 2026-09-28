@@ -61,6 +61,17 @@ h1 {
   border: 2px solid var(--se-gold);
 }
 
+.photo-reminder {
+  display: block;
+  font-size: 12px;
+  color: var(--se-gold-light);
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px dashed var(--se-gold);
+  border-radius: var(--se-radius-sm);
+  padding: var(--se-space-2);
+  text-decoration: none;
+}
+
 .member-info {
   display: flex;
   flex-direction: column;
@@ -113,4 +124,43 @@ h1 {
   font-size: 12px;
   color: var(--se-silver-dark);
   margin: 0;
+}
+
+.debug-token {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--se-space-1);
+  padding-top: var(--se-space-3);
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.debug-label {
+  font-size: 11px;
+  color: var(--se-silver-dark);
+  margin: 0;
+}
+
+.debug-token textarea {
+  width: 100%;
+  resize: none;
+  font-family: monospace;
+  font-size: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--se-silver-dark);
+  border-radius: var(--se-radius-sm);
+  color: var(--se-silver);
+  padding: 6px;
+  word-break: break-all;
+}
+
+.debug-token button {
+  align-self: center;
+  padding: 6px 14px;
+  border: none;
+  border-radius: var(--se-radius-sm);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--se-silver);
+  font-size: 12px;
+  cursor: pointer;
 }

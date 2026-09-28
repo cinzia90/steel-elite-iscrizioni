@@ -7,7 +7,7 @@
       @if (photoPreviewUrl()) {
         <img class="photo-preview" [src]="photoPreviewUrl()" alt="" />
       }
-      <input type="file" accept="image/*" capture="user" (change)="onPhotoSelected($event)" />
+      <input type="file" accept="image/*" (change)="onPhotoSelected($event)" />
     </label>
 
     <label>
@@ -45,7 +45,7 @@
     }
 
     <button type="submit" [disabled]="loading()">
-      {{ loading() ? t.submitting : t.submit }}
+      {{ loading() ? t.submitting : (alreadySubscribed() ? t.submitReturning : t.submit) }}
     </button>
   </form>
 </div>

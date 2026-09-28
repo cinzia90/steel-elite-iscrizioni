@@ -25,6 +25,34 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--se-gold);
+  cursor: zoom-in;
+}
+
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  cursor: zoom-out;
+
+  img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: var(--se-radius-md);
+    object-fit: contain;
+  }
+}
+
+.remove-photo {
+  margin-top: var(--se-space-1);
+  background: rgba(224, 92, 92, 0.15);
+  color: #e05c5c;
+  border: 1px solid #e05c5c;
+  padding: 4px 10px;
+  font-size: 11px;
 }
 
 .photo-placeholder {

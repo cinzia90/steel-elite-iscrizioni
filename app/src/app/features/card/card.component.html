@@ -9,6 +9,8 @@
     } @else if (statusReason() === 'active') {
       @if (photoUrl()) {
         <img class="photo" [src]="photoUrl()" alt="" />
+      } @else {
+        <a class="photo-reminder" routerLink="/iscriviti/profilo">{{ t.photoMissing }}</a>
       }
 
       <div class="member-info">
@@ -32,6 +34,14 @@
       }
 
       <p class="hint">{{ t.brightnessHint }}</p>
+
+      @if (isMock && rawToken()) {
+        <div class="debug-token">
+          <p class="debug-label">Token JWT (solo demo) — incollalo su jwt.io per vedere i dati:</p>
+          <textarea readonly rows="3" (click)="$any($event.target).select()">{{ rawToken() }}</textarea>
+          <button type="button" (click)="copyToken()">{{ tokenCopied() ? 'Copiato!' : 'Copia token' }}</button>
+        </div>
+      }
     } @else {
       <div class="status-block">
         @switch (statusReason()) {

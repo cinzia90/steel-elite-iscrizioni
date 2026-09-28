@@ -27,6 +27,37 @@ export interface MockSessionUser {
   email: string;
 }
 
+// Il token QR della modalità demo ha la stessa forma a 3 segmenti di un JWT
+// reale (header.payload.firma) così, per debug, si può incollare su
+// jwt.io e leggerne header/payload — la "firma" non è verificabile perché
+// non è un vero HMAC, ma qui non serve: la verifica reale avviene solo
+// lato server nell'ambiente non-demo.
+function base64url(input: string): string {
+  return btoa(input).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function base64urlDecode(input: string): string {
+  const padLength = (4 - (input.length % 4)) % 4;
+  const padded = input.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat(padLength);
+  return atob(padded);
+}
+
+function encodeMockJwt(payload: unknown): string {
+  const header = { alg: 'HS256', typ: 'JWT' };
+  const headerPart = base64url(JSON.stringify(header));
+  const payloadPart = base64url(JSON.stringify(payload));
+  const signaturePart = base64url('demo-mode-not-a-real-signature');
+  return `${headerPart}.${payloadPart}.${signaturePart}`;
+}
+
+function decodeMockJwtPayload(token: string): unknown {
+  const parts = token.split('.');
+  if (parts.length !== 3) {
+    throw new Error('invalid token shape');
+  }
+  return JSON.parse(base64urlDecode(parts[1]));
+}
+
 interface AuthResult {
   error: { message: string } | null;
   session: boolean;
@@ -124,6 +155,16 @@ export class MockBackendService {
     const profile = this.state.profiles.find((p) => p.id === userId);
     if (profile) {
       Object.assign(profile, partial);
+      this.persist();
+    }
+  }
+
+  // L'admin può rimuovere una foto caricata per errore: il member la vedrà
+  // sparire e potrà ricaricarla da /iscriviti/profilo.
+  deletePhoto(memberId: string): void {
+    const profile = this.state.profiles.find((p) => p.id === memberId);
+    if (profile) {
+      profile.photo_path = null;
       this.persist();
     }
   }
@@ -378,7 +419,7 @@ export class MockBackendService {
     }
 
     const payload = buildAccessTokenPayload(memberId, uuid(), new Date());
-    return btoa(JSON.stringify(payload));
+    return encodeMockJwt(payload);
   }
 
   // ===== Check-in staff =====
@@ -404,7 +445,7 @@ export class MockBackendService {
   async verifyCheckinQr(staffId: string, token: string) {
     let payload: { sub: string; jti: string; exp: number } | null = null;
     try {
-      payload = JSON.parse(atob(token));
+      payload = decodeMockJwtPayload(token) as { sub: string; jti: string; exp: number };
     } catch {
       payload = null;
     }

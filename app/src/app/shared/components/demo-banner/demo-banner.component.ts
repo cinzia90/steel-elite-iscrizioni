@@ -8,7 +8,7 @@ import { MockBackendService } from '../../../core/mock/mock-backend.service';
     <div class="demo-banner">
       <span>
         <strong>MODALITÀ DEMO</strong> — nessun dato reale. Admin: admin&#64;demo.steelelite.it / demo1234 · Staff:
-        staff&#64;demo.steelelite.it / demo1234
+        staff&#64;demo.steelelite.it / demo1234 · Cliente: cliente&#64;demo.steelelite.it / demo1234
       </span>
       <button (click)="reset()">Reset dati demo</button>
     </div>

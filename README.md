@@ -37,10 +37,11 @@ npm run start:demo
 
 `environment.demo.ts` (`mock: true`) attiva un backend finto interamente in memoria + `localStorage` (`core/mock/mock-backend.service.ts`), che riproduce lo stesso comportamento delle Edge Function reali — inclusa la stessa logica di business già testata (calcolo scadenze, verifica OTP, regole di check-in). Iscrizione, pagamento (istantaneo, nessun vero Stripe), tessera QR e check-in funzionano end-to-end.
 
-Due account sono pre-creati per accedere subito senza passare dall'iscrizione:
+Tre account sono pre-creati per accedere subito senza passare dall'iscrizione:
 
 - **Admin**: `admin@demo.steelelite.it` / `demo1234`
 - **Staff**: `staff@demo.steelelite.it` / `demo1234`
+- **Cliente**: `cliente@demo.steelelite.it` / `demo1234` — abbonamento "Palestra Open — Mensile" già attivo e certificato medico già approvato, per vedere subito la tessera con il QR funzionante senza rifare l'iscrizione. Per provare invece il flusso di iscrizione da zero, usa un'email qualsiasi in `/iscriviti`.
 
 Un banner in cima alla pagina ricorda che si è in modalità demo e permette di azzerare i dati (pulsante "Reset dati demo"). Il codice OTP dell'iscrizione viene mostrato direttamente a schermo (non c'è un vero invio email).
 

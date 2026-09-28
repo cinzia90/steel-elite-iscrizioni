@@ -68,7 +68,7 @@ Route pubblica `/iscriviti`, raggiungibile dal QR della locandina.
 
 1. **Scelta abbonamento** tra i `plans` attivi.
 2. **Account**: email + password (o magic link).
-3. **Dati anagrafici + foto** (scattata con la fotocamera o caricata). La foto è obbligatoria: serve allo staff al check-in.
+3. **Dati anagrafici + foto** (input file senza l'attributo `capture`, così su mobile il sistema operativo propone la scelta tra fotocamera e galleria, non forza la fotocamera). La foto è obbligatoria: serve allo staff al check-in. Se l'admin la rimuove per errore (vedi "Pannello admin" → Clienti), il member la vede sparire dalla tessera con un promemoria e può ricaricarla tornando su questo stesso step (da autenticato torna alla tessera invece che al certificato, dato che l'iscrizione è già completa).
 4. **Certificato medico**: upload PDF/immagine + data di scadenza. **Facoltativo a questo punto** (pulsante "salta per ora"): il member ha `settings.certificate_grace_days` giorni (default 10) dalla registrazione (`profiles.created_at`) per caricarlo — vedi "Tessera con QR dinamico" per cosa succede alla scadenza. Chi lo salta può caricarlo più tardi dalla tessera o tornando su questo stesso step.
 5. **Contratto**: anteprima del testo (template versionato, testo fornito dal proprietario, placeholder per ora), checkbox di accettazione di contratto, regolamento e informativa privacy, poi **codice OTP a 6 cifre via email**. Alla conferma una Edge Function genera il PDF, ne calcola lo SHA-256 e salva il record in `contracts` con IP e user agent.
 6. **Pagamento**: Stripe Checkout. Al ritorno l'utente vede "pagamento in verifica" finché il webhook non attiva l'abbonamento.
@@ -101,7 +101,7 @@ Route `/staff/check-in`, protetta (ruolo `staff` o `admin`).
   5. anti-passback: nessun ingresso `granted` negli ultimi `anti_passback_minutes`.
 - Registra **sempre** un record in `access_logs`, anche quando nega l'accesso, con il motivo.
 - Risponde con: esito, nome, signed URL della foto (breve scadenza), piano, data di scadenza, stato del certificato, motivo del rifiuto.
-- UI: schermata a tutto schermo verde (accesso consentito) o rossa (negato) con foto grande, così lo staff confronta il volto. Suono diverso per verde e rosso, vibrazione dove supportata. Dopo 3 secondi torna automaticamente alla scansione. Pulsante "Scansiona di nuovo" subito disponibile.
+- UI: schermata a tutto schermo verde (accesso consentito) o rossa (negato) con foto grande, così lo staff confronta il volto; tap sulla foto per ingrandirla ulteriormente a schermo intero (mette in pausa il ritorno automatico di 3 secondi finché non si richiude). Suono diverso per verde e rosso, vibrazione dove supportata. Dopo 3 secondi torna automaticamente alla scansione. Pulsante "Scansiona di nuovo" subito disponibile.
 - **Check-in manuale** di riserva: ricerca cliente per nome e conferma ingresso (loggato con `reason = 'manual'`).
 
 `verify-checkin` è l'unico punto di verifica: in futuro un varco automatico chiamerà la stessa funzione.
@@ -121,7 +121,7 @@ Route `/staff/check-in`, protetta (ruolo `staff` o `admin`).
 Route `/admin`, ruolo `admin`.
 
 - **Dashboard**: ingressi di oggi, clienti attivi, abbonamenti in scadenza nei prossimi 7 giorni, certificati in scadenza e da approvare.
-- **Clienti**: lista con ricerca e filtri, scheda con dati, foto, abbonamenti, contratti (download PDF), certificato (visualizzazione tramite signed URL), storico ingressi.
+- **Clienti**: lista con ricerca e filtri, scheda con dati, foto (tap per ingrandire a schermo intero, utile per verificare l'identità), abbonamenti, contratti (download PDF), certificato (visualizzazione tramite signed URL), storico ingressi. L'admin può rimuovere la foto (es. caricata per errore in fase di iscrizione): il member se ne accorge dalla tessera e la ricarica da `/iscriviti/profilo`.
 - **Certificati**: coda di approvazione (approva / rifiuta con nota).
 - **Piani**: CRUD, collegamento a `stripe_price_id`, attiva/disattiva.
 - **Ingressi**: log filtrabile per data ed esito, esportazione CSV.
@@ -178,11 +178,12 @@ Ogni fase si chiude solo quando i criteri di accettazione sono soddisfatti. **Tu
 
 ## Aggiornamenti dopo la Fase 7 (su richiesta del proprietario)
 
-Il sistema è in produzione concettualmente completo, ma non ancora collegato a un Supabase/Stripe reali (vedi "Da ricevere dal proprietario"). Nel frattempo sono state aggiunte due cose:
+Il sistema è in produzione concettualmente completo, ma non ancora collegato a un Supabase/Stripe reali (vedi "Da ricevere dal proprietario"). Nel frattempo sono state aggiunte queste cose:
 
-- **Modalità demo** (`environment.demo.ts`, `mock: true`, `npm run start:demo`): per testare il giro completo in locale e mostrarlo al cliente senza credenziali reali. `AuthService`, `PlansService` e ogni componente che normalmente chiama Supabase/Edge Function deleghino invece a `core/mock/mock-backend.service.ts`, un backend finto in memoria + `localStorage`. Riusa la stessa logica di business pura già testata nelle Edge Function (copiata in `core/mock/logic/`, va tenuta allineata a mano se le regole cambiano). Vedi il README per le credenziali demo. `environment.mock` è sempre `false` fuori da questa configurazione.
+- **Modalità demo** (`environment.demo.ts`, `mock: true`, `npm run start:demo`): per testare il giro completo in locale e mostrarlo al cliente senza credenziali reali. `AuthService`, `PlansService` e ogni componente che normalmente chiama Supabase/Edge Function deleghino invece a `core/mock/mock-backend.service.ts`, un backend finto in memoria + `localStorage`. Riusa la stessa logica di business pura già testata nelle Edge Function (copiata in `core/mock/logic/`, va tenuta allineata a mano se le regole cambiano). Tre account pre-creati: admin, staff e un **cliente demo con abbonamento già attivo e certificato approvato** (per vedere subito tessera/QR senza rifare l'iscrizione). Vedi il README per le credenziali. `environment.mock` è sempre `false` fuori da questa configurazione. In modalità demo, sotto il QR della tessera compare anche il **token JWT in chiaro** (formato standard a 3 segmenti, incollabile su jwt.io per controllare i dati) — solo per debug, mai presente fuori da `environment.mock`.
 - **QR statico per la locandina** (`/admin/qr-locandina`, vedi "Pannello admin"): il proprietario vuole poter stampare un QR fisso da appendere in palestra, oltre al QR dinamico della tessera.
 - **Certificato medico reso facoltativo** con tolleranza di `certificate_grace_days` giorni (vedi "Flusso di iscrizione" e "Tessera con QR dinamico"): decisione del proprietario per non bloccare l'iscrizione di chi non ha ancora il certificato pronto.
+- **Foto profilo**: scelta camera/galleria su mobile invece di forzare la fotocamera, tap per ingrandire nel check-in staff e nella scheda cliente admin (identificazione), possibilità per l'admin di rimuoverla e per il member di ricaricarla (vedi "Flusso di iscrizione" e "Pannello admin").
 
 ## Da ricevere dal proprietario (placeholder finché mancano)
 
