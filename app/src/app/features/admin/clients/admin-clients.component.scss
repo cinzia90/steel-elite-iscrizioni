@@ -1,0 +1,48 @@
+.clients-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--se-space-4);
+}
+
+h1 {
+  color: var(--se-gold-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 20px;
+  margin-bottom: var(--se-space-3);
+}
+
+input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--se-silver-dark);
+  border-radius: var(--se-radius-sm);
+  padding: 10px 12px;
+  color: var(--se-silver);
+  font-size: 15px;
+  margin-bottom: var(--se-space-3);
+}
+
+.status {
+  color: var(--se-silver-dark);
+}
+
+.clients-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--se-space-1);
+}
+
+.client-row {
+  display: block;
+  padding: var(--se-space-2) var(--se-space-3);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--se-radius-sm);
+  color: var(--se-silver);
+  text-decoration: none;
+
+  &:hover {
+    border-color: var(--se-gold);
+  }
+}

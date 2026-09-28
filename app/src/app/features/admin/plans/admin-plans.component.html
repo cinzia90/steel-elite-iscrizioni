@@ -1,0 +1,80 @@
+<div class="plans-page">
+  <div class="header-row">
+    <h1>{{ t.title }}</h1>
+    @if (!editing()) {
+      <button (click)="startNew()">{{ t.newPlan }}</button>
+    }
+  </div>
+
+  @if (errorMessage()) {
+    <p class="status error">{{ errorMessage() }}</p>
+  }
+
+  @if (editing()) {
+    <form class="plan-form" (ngSubmit)="save()">
+      <label>
+        {{ t.name }}
+        <input type="text" name="name" [(ngModel)]="form.name" required />
+      </label>
+
+      <label>
+        {{ t.description }}
+        <input type="text" name="description" [(ngModel)]="form.description" />
+      </label>
+
+      <label>
+        {{ t.category }}
+        <select name="category" [(ngModel)]="form.category">
+          <option value="open">Open</option>
+          <option value="pt_privato">PT Privato</option>
+          <option value="pt_small_group">PT Small Group</option>
+        </select>
+      </label>
+
+      <label>
+        {{ t.priceEuro }}
+        <input type="number" step="0.01" name="priceEuro" [(ngModel)]="form.priceEuro" required />
+      </label>
+
+      <label>
+        {{ t.durationDays }}
+        <input type="number" name="durationDays" [(ngModel)]="form.durationDays" />
+      </label>
+
+      <label>
+        {{ t.sessionCount }}
+        <input type="number" name="sessionCount" [(ngModel)]="form.sessionCount" />
+      </label>
+
+      <label class="checkbox">
+        <input type="checkbox" name="isRecurring" [(ngModel)]="form.isRecurring" />
+        {{ t.recurring }}
+      </label>
+
+      <label class="checkbox">
+        <input type="checkbox" name="active" [(ngModel)]="form.active" />
+        {{ t.active }}
+      </label>
+
+      <div class="actions">
+        <button type="submit">{{ t.save }}</button>
+        <button type="button" (click)="cancel()">{{ t.cancel }}</button>
+      </div>
+    </form>
+  }
+
+  <div class="plans-list">
+    @for (plan of plans(); track plan.id) {
+      <div class="plan-row" [class.inactive]="!plan.active">
+        <div class="info">
+          <span class="name">{{ plan.name }}</span>
+          <span class="meta">{{ plan.category }} · {{ (plan.price_cents / 100).toFixed(2) }} €</span>
+        </div>
+        <div class="actions">
+          <button (click)="startEdit(plan)">{{ t.edit }}</button>
+          <button (click)="toggleActive(plan)">{{ plan.active ? t.deactivate : t.activate }}</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

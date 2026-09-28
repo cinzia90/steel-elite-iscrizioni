@@ -1,0 +1,22 @@
+<div class="clients-page">
+  <h1>{{ t.title }}</h1>
+
+  <input
+    type="text"
+    [(ngModel)]="query"
+    (ngModelChange)="search()"
+    [placeholder]="t.searchPlaceholder"
+  />
+
+  @if (!loading() && clients().length === 0) {
+    <p class="status">{{ t.empty }}</p>
+  }
+
+  <div class="clients-list">
+    @for (client of clients(); track client.id) {
+      <a class="client-row" [routerLink]="['/admin/clienti', client.id]">
+        {{ client.first_name }} {{ client.last_name }}
+      </a>
+    }
+  </div>
+</div>

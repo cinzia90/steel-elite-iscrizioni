@@ -1,0 +1,115 @@
+.staff-page {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--se-space-4);
+}
+
+h1 {
+  color: var(--se-gold-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 20px;
+  margin-bottom: var(--se-space-3);
+}
+
+.invite-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--se-space-2);
+  padding: var(--se-space-3);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  border-radius: var(--se-radius-md);
+  margin-bottom: var(--se-space-4);
+}
+
+h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--se-gold);
+  margin: 0 0 var(--se-space-1);
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--se-silver-dark);
+}
+
+input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--se-silver-dark);
+  border-radius: var(--se-radius-sm);
+  padding: 8px 10px;
+  color: var(--se-silver);
+  font-size: 14px;
+}
+
+.status.error {
+  color: #e05c5c;
+  font-size: 13px;
+}
+
+.status.success {
+  color: #4caf6f;
+  font-size: 13px;
+}
+
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--se-radius-sm);
+  background: linear-gradient(135deg, var(--se-gold-light), var(--se-gold));
+  color: var(--se-black);
+  font-weight: 700;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.staff-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--se-space-2);
+}
+
+.staff-row {
+  display: flex;
+  align-items: center;
+  gap: var(--se-space-3);
+  padding: var(--se-space-2) var(--se-space-3);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--se-radius-sm);
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 600;
+}
+
+.email {
+  font-size: 12px;
+  color: var(--se-silver-dark);
+}
+
+.active-badge {
+  color: #4caf6f;
+  font-size: 12px;
+}
+
+.disabled-badge {
+  color: #e05c5c;
+  font-size: 12px;
+}

@@ -1,0 +1,30 @@
+<div class="dashboard-page">
+  <h1>{{ t.title }}</h1>
+
+  @if (loading()) {
+    <p class="status">…</p>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="value">{{ todayAccessCount() }}</span>
+        <span class="label">{{ t.todayAccess }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="value">{{ activeClientsCount() }}</span>
+        <span class="label">{{ t.activeClients }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="value">{{ expiringSoonCount() }}</span>
+        <span class="label">{{ t.expiringSoon }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="value">{{ certificatesExpiringCount() }}</span>
+        <span class="label">{{ t.certificatesExpiring }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="value">{{ certificatesPendingCount() }}</span>
+        <span class="label">{{ t.certificatesPending }}</span>
+      </div>
+    </div>
+  }
+</div>

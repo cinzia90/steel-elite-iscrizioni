@@ -18,7 +18,7 @@ import { it } from '../../../core/i18n/it';
         <p><a routerLink="/staff/check-in">Check-in</a></p>
       }
       @if (auth.role() === 'admin') {
-        <p><a routerLink="/admin/contratti">Contratti</a></p>
+        <p><a routerLink="/admin">Pannello admin</a></p>
       }
       <button (click)="logout()">{{ t.home.logout }}</button>
     </div>

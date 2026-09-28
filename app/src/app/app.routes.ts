@@ -54,10 +54,62 @@ export const routes: Routes = [
     canActivate: [roleGuard(['staff', 'admin'])],
   },
   {
-    path: 'admin/contratti',
-    loadComponent: () =>
-      import('./features/admin/contracts/admin-contracts.component').then((m) => m.AdminContractsComponent),
+    path: 'admin',
+    loadComponent: () => import('./features/admin/layout/admin-layout.component').then((m) => m.AdminLayoutComponent),
     canActivate: [roleGuard(['admin'])],
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/admin/dashboard/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
+      },
+      {
+        path: 'clienti',
+        loadComponent: () =>
+          import('./features/admin/clients/admin-clients.component').then((m) => m.AdminClientsComponent),
+      },
+      {
+        path: 'clienti/:id',
+        loadComponent: () =>
+          import('./features/admin/clients/admin-client-detail.component').then(
+            (m) => m.AdminClientDetailComponent,
+          ),
+      },
+      {
+        path: 'certificati',
+        loadComponent: () =>
+          import('./features/admin/certificates/admin-certificates.component').then(
+            (m) => m.AdminCertificatesComponent,
+          ),
+      },
+      {
+        path: 'piani',
+        loadComponent: () =>
+          import('./features/admin/plans/admin-plans.component').then((m) => m.AdminPlansComponent),
+      },
+      {
+        path: 'ingressi',
+        loadComponent: () =>
+          import('./features/admin/access-logs/admin-access-logs.component').then(
+            (m) => m.AdminAccessLogsComponent,
+          ),
+      },
+      {
+        path: 'staff',
+        loadComponent: () =>
+          import('./features/admin/staff/admin-staff.component').then((m) => m.AdminStaffComponent),
+      },
+      {
+        path: 'contratti',
+        loadComponent: () =>
+          import('./features/admin/contracts/admin-contracts.component').then((m) => m.AdminContractsComponent),
+      },
+      {
+        path: 'impostazioni',
+        loadComponent: () =>
+          import('./features/admin/settings/admin-settings.component').then((m) => m.AdminSettingsComponent),
+      },
+    ],
   },
   {
     path: '',
