@@ -6,7 +6,7 @@ import {
 } from "./chunk-XXIBBBHG.js";
 import {
   it
-} from "./chunk-2QEQLM23.js";
+} from "./chunk-VDIJZGGP.js";
 import {
   RouterLink
 } from "./chunk-NKGUCW2I.js";
@@ -173,4 +173,4 @@ var AdminClientsComponent = class _AdminClientsComponent {
 export {
   AdminClientsComponent
 };
-//# sourceMappingURL=chunk-AVRZMRNQ.js.map
+//# sourceMappingURL=chunk-7CMPOPGV.js.map

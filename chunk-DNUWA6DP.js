@@ -1,6 +1,6 @@
 import {
   it
-} from "./chunk-2QEQLM23.js";
+} from "./chunk-VDIJZGGP.js";
 import {
   MockBackendService,
   SupabaseService,
@@ -224,4 +224,4 @@ var AdminContractsComponent = class _AdminContractsComponent {
 export {
   AdminContractsComponent
 };
-//# sourceMappingURL=chunk-FB6I6LEF.js.map
+//# sourceMappingURL=chunk-DNUWA6DP.js.map

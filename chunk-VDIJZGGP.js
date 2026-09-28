@@ -1,7 +1,7 @@
 // src/app/core/i18n/it.ts
 var it = {
   login: {
-    title: "Accedi",
+    motto: "Dove la forza non ha bisogno di dimostrarsi",
     email: "Email",
     password: "Password",
     submit: "Accedi",
@@ -260,4 +260,4 @@ var it = {
 export {
   it
 };
-//# sourceMappingURL=chunk-2QEQLM23.js.map
+//# sourceMappingURL=chunk-VDIJZGGP.js.map

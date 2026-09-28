@@ -10,7 +10,7 @@ import {
 } from "./chunk-XXIBBBHG.js";
 import {
   it
-} from "./chunk-2QEQLM23.js";
+} from "./chunk-VDIJZGGP.js";
 import {
   Router
 } from "./chunk-NKGUCW2I.js";
@@ -302,4 +302,4 @@ var ProfileComponent = class _ProfileComponent {
 export {
   ProfileComponent
 };
-//# sourceMappingURL=chunk-HKBCNSVM.js.map
+//# sourceMappingURL=chunk-KTHG7JWK.js.map

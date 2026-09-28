@@ -1,6 +1,6 @@
 import {
   it
-} from "./chunk-2QEQLM23.js";
+} from "./chunk-VDIJZGGP.js";
 import {
   ActivatedRoute,
   RouterLink
@@ -550,4 +550,4 @@ var AdminClientDetailComponent = class _AdminClientDetailComponent {
 export {
   AdminClientDetailComponent
 };
-//# sourceMappingURL=chunk-PMY3CLMH.js.map
+//# sourceMappingURL=chunk-7TGSP7TS.js.map

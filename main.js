@@ -91,101 +91,101 @@ function roleGuard(allowed) {
 var routes = [
   {
     path: "login",
-    loadComponent: () => import("./chunk-4D7QILLZ.js").then((m) => m.LoginComponent)
+    loadComponent: () => import("./chunk-LBK7YNXS.js").then((m) => m.LoginComponent)
   },
   {
     path: "iscriviti",
-    loadComponent: () => import("./chunk-HE5ZHVDG.js").then((m) => m.PlanSelectComponent)
+    loadComponent: () => import("./chunk-AHI52THQ.js").then((m) => m.PlanSelectComponent)
   },
   {
     path: "iscriviti/account",
-    loadComponent: () => import("./chunk-PEY26U7C.js").then((m) => m.AccountComponent)
+    loadComponent: () => import("./chunk-NRMSYJIE.js").then((m) => m.AccountComponent)
   },
   {
     path: "iscriviti/profilo",
-    loadComponent: () => import("./chunk-HKBCNSVM.js").then((m) => m.ProfileComponent),
+    loadComponent: () => import("./chunk-KTHG7JWK.js").then((m) => m.ProfileComponent),
     canActivate: [authGuard]
   },
   {
     path: "iscriviti/certificato",
-    loadComponent: () => import("./chunk-NZM5JVF2.js").then((m) => m.CertificateComponent),
+    loadComponent: () => import("./chunk-ASUPZT6E.js").then((m) => m.CertificateComponent),
     canActivate: [authGuard]
   },
   {
     path: "iscriviti/contratto",
-    loadComponent: () => import("./chunk-7VN2Y6UJ.js").then((m) => m.ContractComponent),
+    loadComponent: () => import("./chunk-FIR4ABU5.js").then((m) => m.ContractComponent),
     canActivate: [authGuard]
   },
   {
     path: "iscriviti/pagamento",
-    loadComponent: () => import("./chunk-GRJKQTZC.js").then((m) => m.PaymentComponent),
+    loadComponent: () => import("./chunk-DLCGUOX5.js").then((m) => m.PaymentComponent),
     canActivate: [authGuard]
   },
   {
     path: "iscriviti/conferma",
-    loadComponent: () => import("./chunk-UHGTUWG7.js").then((m) => m.PaymentPendingComponent),
+    loadComponent: () => import("./chunk-5VL27PRI.js").then((m) => m.PaymentPendingComponent),
     canActivate: [authGuard]
   },
   {
     path: "tessera",
-    loadComponent: () => import("./chunk-YXB7QE3P.js").then((m) => m.CardComponent),
+    loadComponent: () => import("./chunk-BNJQV3QS.js").then((m) => m.CardComponent),
     canActivate: [authGuard]
   },
   {
     path: "staff/check-in",
-    loadComponent: () => import("./chunk-FQOFAGYU.js").then((m) => m.CheckInComponent),
+    loadComponent: () => import("./chunk-BSM2OPB4.js").then((m) => m.CheckInComponent),
     canActivate: [roleGuard(["staff", "admin"])]
   },
   {
     path: "admin",
-    loadComponent: () => import("./chunk-NX54IYUB.js").then((m) => m.AdminLayoutComponent),
+    loadComponent: () => import("./chunk-6TUPD32D.js").then((m) => m.AdminLayoutComponent),
     canActivate: [roleGuard(["admin"])],
     children: [
       {
         path: "",
-        loadComponent: () => import("./chunk-DWFSI2F3.js").then((m) => m.AdminDashboardComponent)
+        loadComponent: () => import("./chunk-5AWQUO6P.js").then((m) => m.AdminDashboardComponent)
       },
       {
         path: "clienti",
-        loadComponent: () => import("./chunk-AVRZMRNQ.js").then((m) => m.AdminClientsComponent)
+        loadComponent: () => import("./chunk-7CMPOPGV.js").then((m) => m.AdminClientsComponent)
       },
       {
         path: "clienti/:id",
-        loadComponent: () => import("./chunk-PMY3CLMH.js").then((m) => m.AdminClientDetailComponent)
+        loadComponent: () => import("./chunk-7TGSP7TS.js").then((m) => m.AdminClientDetailComponent)
       },
       {
         path: "certificati",
-        loadComponent: () => import("./chunk-6QGQ7ICY.js").then((m) => m.AdminCertificatesComponent)
+        loadComponent: () => import("./chunk-NNXDZFLM.js").then((m) => m.AdminCertificatesComponent)
       },
       {
         path: "piani",
-        loadComponent: () => import("./chunk-OTE7MZE2.js").then((m) => m.AdminPlansComponent)
+        loadComponent: () => import("./chunk-D3D5Z7AM.js").then((m) => m.AdminPlansComponent)
       },
       {
         path: "ingressi",
-        loadComponent: () => import("./chunk-MWERRMSL.js").then((m) => m.AdminAccessLogsComponent)
+        loadComponent: () => import("./chunk-HOBWGYYA.js").then((m) => m.AdminAccessLogsComponent)
       },
       {
         path: "staff",
-        loadComponent: () => import("./chunk-WL57PRGI.js").then((m) => m.AdminStaffComponent)
+        loadComponent: () => import("./chunk-TEASFC4C.js").then((m) => m.AdminStaffComponent)
       },
       {
         path: "contratti",
-        loadComponent: () => import("./chunk-FB6I6LEF.js").then((m) => m.AdminContractsComponent)
+        loadComponent: () => import("./chunk-DNUWA6DP.js").then((m) => m.AdminContractsComponent)
       },
       {
         path: "qr-locandina",
-        loadComponent: () => import("./chunk-KL4A757R.js").then((m) => m.AdminQrPosterComponent)
+        loadComponent: () => import("./chunk-VA44IOS4.js").then((m) => m.AdminQrPosterComponent)
       },
       {
         path: "impostazioni",
-        loadComponent: () => import("./chunk-4JNHJEDO.js").then((m) => m.AdminSettingsComponent)
+        loadComponent: () => import("./chunk-YPB4IYCP.js").then((m) => m.AdminSettingsComponent)
       }
     ]
   },
   {
     path: "",
-    loadComponent: () => import("./chunk-QGP4RYRJ.js").then((m) => m.HomeComponent),
+    loadComponent: () => import("./chunk-545UR4ZI.js").then((m) => m.HomeComponent),
     canActivate: [authGuard]
   },
   { path: "**", redirectTo: "" }
