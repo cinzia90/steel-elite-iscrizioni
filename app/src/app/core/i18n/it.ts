@@ -1,6 +1,6 @@
 export const it = {
   login: {
-    title: 'Accedi',
+    motto: 'Dove la forza non ha bisogno di dimostrarsi',
     email: 'Email',
     password: 'Password',
     submit: 'Accedi',

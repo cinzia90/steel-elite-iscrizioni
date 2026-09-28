@@ -26,13 +26,14 @@
   align-self: center;
 }
 
-h1 {
+.motto {
   text-align: center;
   margin: 0 0 var(--se-space-2);
-  color: var(--se-gold-light);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-size: 20px;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 label {
