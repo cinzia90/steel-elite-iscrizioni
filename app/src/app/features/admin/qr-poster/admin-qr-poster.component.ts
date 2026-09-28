@@ -6,8 +6,10 @@ import { it } from '../../../core/i18n/it';
 // Genera il QR statico che punta a /iscriviti, da stampare o fotografare
 // per la locandina fisica in palestra (vedi CLAUDE.md, "Flusso di
 // iscrizione": "Route pubblica /iscriviti, raggiungibile dal QR della
-// locandina"). window.location.origin funziona automaticamente sia in
-// sviluppo/demo sia in produzione, senza bisogno di configurazione.
+// locandina"). Usa document.baseURI (risolve il tag <base href>), non
+// window.location.origin: se l'app è pubblicata in una sottocartella
+// (es. la demo su GitHub Pages, /steel-elite-iscrizioni/) l'origin da
+// solo non basta e genererebbe un link rotto.
 @Component({
   selector: 'app-admin-qr-poster',
   standalone: true,
@@ -18,7 +20,7 @@ import { it } from '../../../core/i18n/it';
 export class AdminQrPosterComponent implements OnInit {
   readonly t = it.admin.qrPoster;
   readonly qrDataUrl = signal<string | null>(null);
-  readonly signupUrl = `${window.location.origin}/iscriviti`;
+  readonly signupUrl = new URL('iscriviti', document.baseURI).toString();
 
   async ngOnInit(): Promise<void> {
     this.qrDataUrl.set(
