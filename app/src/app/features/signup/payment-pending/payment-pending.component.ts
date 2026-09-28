@@ -73,6 +73,7 @@ export class PaymentPendingComponent implements OnInit, OnDestroy {
         if (this.pollHandle) {
           clearInterval(this.pollHandle);
         }
+        setTimeout(() => this.router.navigateByUrl('/tessera'), 1500);
         return;
       }
 

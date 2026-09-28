@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { it } from '../../../core/i18n/it';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [RouterLink],
   template: `
     <div style="padding: 24px;">
       <h1>Steel Elite</h1>
       <p>{{ t.home.greeting }} {{ auth.profile()?.first_name || auth.user()?.email }} ({{ auth.role() }})</p>
+      @if (auth.role() === 'member') {
+        <p><a routerLink="/tessera">Tessera</a></p>
+      }
       <button (click)="logout()">{{ t.home.logout }}</button>
     </div>
   `,

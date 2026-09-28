@@ -1,0 +1,54 @@
+<div class="card-page">
+  <div class="card">
+    <h1>{{ t.title }}</h1>
+
+    @if (loading()) {
+      <p class="status">{{ t.loading }}</p>
+    } @else if (offline()) {
+      <p class="status error">{{ t.offline }}</p>
+    } @else if (statusReason() === 'active') {
+      @if (photoUrl()) {
+        <img class="photo" [src]="photoUrl()" alt="" />
+      }
+
+      <div class="member-info">
+        <span class="plan">{{ planName() }}</span>
+        @if (endDateLabel()) {
+          <span class="expiry">Scadenza: {{ endDateLabel() }}</span>
+        }
+      </div>
+
+      @if (qrDataUrl()) {
+        <img class="qr" [src]="qrDataUrl()" alt="QR di accesso" />
+        <div class="progress-track">
+          <div class="progress-fill" [style.width.%]="progressPercent"></div>
+        </div>
+      }
+
+      <p class="hint">{{ t.brightnessHint }}</p>
+    } @else {
+      <div class="status-block">
+        @switch (statusReason()) {
+          @case ('no_subscription') {
+            <p class="status">{{ t.noSubscription }}</p>
+            <a routerLink="/iscriviti">{{ t.renew }}</a>
+          }
+          @case ('pending_payment') {
+            <p class="status">{{ t.pendingPayment }}</p>
+          }
+          @case ('expired') {
+            <p class="status">{{ t.expired }}</p>
+            <a routerLink="/iscriviti">{{ t.renew }}</a>
+          }
+          @case ('certificate_missing') {
+            <p class="status">{{ t.certificateMissing }}</p>
+            <a routerLink="/iscriviti/certificato">{{ t.uploadCertificate }}</a>
+          }
+          @case ('certificate_pending') {
+            <p class="status">{{ t.certificatePending }}</p>
+          }
+        }
+      </div>
+    }
+  </div>
+</div>

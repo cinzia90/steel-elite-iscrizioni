@@ -92,6 +92,19 @@ export const it = {
       retry: 'Riprova il pagamento',
     },
   },
+  card: {
+    title: 'La tua tessera',
+    brightnessHint: 'Alza la luminosità dello schermo per una lettura più rapida.',
+    loading: 'Caricamento…',
+    offline: 'Nessuna connessione. Riprova quando sei online: senza connessione non possiamo generare un QR valido.',
+    noSubscription: 'Nessun abbonamento attivo.',
+    pendingPayment: 'Pagamento in verifica. La tessera sarà disponibile appena confermato.',
+    expired: 'Il tuo abbonamento è scaduto.',
+    certificateMissing: 'Certificato medico mancante. Caricalo per attivare la tessera.',
+    certificatePending: 'Certificato medico in attesa di approvazione.',
+    renew: 'Rinnova abbonamento',
+    uploadCertificate: 'Carica certificato',
+  },
   admin: {
     contracts: {
       title: 'Contratti firmati',

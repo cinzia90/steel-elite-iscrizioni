@@ -44,6 +44,11 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'tessera',
+    loadComponent: () => import('./features/card/card.component').then((m) => m.CardComponent),
+    canActivate: [authGuard],
+  },
+  {
     path: 'admin/contratti',
     loadComponent: () =>
       import('./features/admin/contracts/admin-contracts.component').then((m) => m.AdminContractsComponent),
