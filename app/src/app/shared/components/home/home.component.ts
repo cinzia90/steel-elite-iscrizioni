@@ -14,6 +14,12 @@ import { it } from '../../../core/i18n/it';
       @if (auth.role() === 'member') {
         <p><a routerLink="/tessera">Tessera</a></p>
       }
+      @if (auth.role() === 'staff' || auth.role() === 'admin') {
+        <p><a routerLink="/staff/check-in">Check-in</a></p>
+      }
+      @if (auth.role() === 'admin') {
+        <p><a routerLink="/admin/contratti">Contratti</a></p>
+      }
       <button (click)="logout()">{{ t.home.logout }}</button>
     </div>
   `,

@@ -105,6 +105,28 @@ export const it = {
     renew: 'Rinnova abbonamento',
     uploadCertificate: 'Carica certificato',
   },
+  checkin: {
+    title: 'Check-in',
+    start: 'Avvia scanner',
+    stop: 'Ferma scanner',
+    scanAgain: 'Scansiona di nuovo',
+    torch: 'Torcia',
+    manualToggle: 'Check-in manuale',
+    manualSearchPlaceholder: 'Cerca cliente per nome…',
+    manualConfirm: 'Conferma ingresso',
+    manualEmpty: 'Nessun cliente trovato.',
+    granted: 'ACCESSO CONSENTITO',
+    denied: 'ACCESSO NEGATO',
+    reasons: {
+      invalid_token: 'QR non valido o scaduto',
+      token_reused: 'QR già utilizzato',
+      subscription_inactive: 'Abbonamento non attivo o scaduto',
+      certificate_invalid: 'Certificato medico mancante, scaduto o non approvato',
+      anti_passback: 'Ingresso già registrato di recente',
+    },
+    cameraError: 'Impossibile accedere alla fotocamera.',
+    errorGeneric: 'Si è verificato un errore durante la verifica.',
+  },
   admin: {
     contracts: {
       title: 'Contratti firmati',
