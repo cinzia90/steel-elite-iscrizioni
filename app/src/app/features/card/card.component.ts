@@ -18,6 +18,12 @@ type StatusReason =
 
 const REFRESH_INTERVAL_SECONDS = 30;
 
+function certificateGraceDeadline(memberCreatedAt: string, graceDays: number): Date {
+  const deadline = new Date(memberCreatedAt);
+  deadline.setDate(deadline.getDate() + graceDays);
+  return deadline;
+}
+
 @Component({
   selector: 'app-card',
   standalone: true,
@@ -36,6 +42,9 @@ export class CardComponent implements OnInit, OnDestroy {
   readonly photoUrl = signal<string | null>(null);
   readonly qrDataUrl = signal<string | null>(null);
   readonly secondsRemaining = signal(REFRESH_INTERVAL_SECONDS);
+  // Valorizzato solo durante la finestra di tolleranza per il certificato
+  // medico mancante: mostra un promemoria non bloccante sopra il QR.
+  readonly certificateReminderDate = signal<string | null>(null);
 
   private refreshHandle: ReturnType<typeof setInterval> | null = null;
   private tickHandle: ReturnType<typeof setInterval> | null = null;
@@ -82,8 +91,9 @@ export class CardComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const profile = this.auth.profile();
+
     if (environment.mock) {
-      const profile = this.auth.profile();
       if (profile?.photo_path) {
         this.photoUrl.set(await this.mock.getSignedUrl(profile.photo_path));
       }
@@ -115,20 +125,15 @@ export class CardComponent implements OnInit, OnDestroy {
       const settings = this.mock.getSettings();
       const certificate = this.mock.getLatestCertificate(userId);
 
-      if (!certificate) {
-        this.statusReason.set('certificate_missing');
-        return;
-      }
-      if (settings.require_approved_certificate && certificate.status !== 'approved') {
-        this.statusReason.set('certificate_pending');
-        return;
-      }
-
-      this.statusReason.set('active');
+      this.applyCertificateStatus(
+        certificate?.status ?? null,
+        settings.require_approved_certificate,
+        settings.certificate_grace_days,
+        profile?.created_at ?? null,
+      );
       return;
     }
 
-    const profile = this.auth.profile();
     if (profile?.photo_path) {
       const { data } = await this.supabase.client.storage
         .from('photos')
@@ -169,7 +174,7 @@ export class CardComponent implements OnInit, OnDestroy {
 
     const { data: settings } = await this.supabase.client
       .from('settings')
-      .select('require_approved_certificate')
+      .select('require_approved_certificate, certificate_grace_days')
       .single();
 
     const { data: certificate } = await this.supabase.client
@@ -180,11 +185,32 @@ export class CardComponent implements OnInit, OnDestroy {
       .limit(1)
       .maybeSingle();
 
-    if (!certificate) {
+    this.applyCertificateStatus(
+      certificate?.status ?? null,
+      settings?.require_approved_certificate ?? true,
+      settings?.certificate_grace_days ?? 10,
+      profile?.created_at ?? null,
+    );
+  }
+
+  private applyCertificateStatus(
+    certificateStatus: string | null,
+    requireApproved: boolean,
+    graceDays: number,
+    memberCreatedAt: string | null,
+  ): void {
+    if (!certificateStatus) {
+      const deadline = memberCreatedAt ? certificateGraceDeadline(memberCreatedAt, graceDays) : new Date(0);
+      if (new Date() < deadline) {
+        this.certificateReminderDate.set(deadline.toLocaleDateString('it-IT'));
+        this.statusReason.set('active');
+        return;
+      }
       this.statusReason.set('certificate_missing');
       return;
     }
-    if (settings?.require_approved_certificate && certificate.status !== 'approved') {
+
+    if (requireApproved && certificateStatus !== 'approved') {
       this.statusReason.set('certificate_pending');
       return;
     }

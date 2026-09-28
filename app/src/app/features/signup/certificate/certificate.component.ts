@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ import { it } from '../../../core/i18n/it';
   templateUrl: './certificate.component.html',
   styleUrl: './certificate.component.scss',
 })
-export class CertificateComponent {
+export class CertificateComponent implements OnInit {
   readonly t = it.signup.certificate;
 
   expiryDate = '';
@@ -23,6 +23,10 @@ export class CertificateComponent {
 
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  // true se il member ha già un abbonamento (sta caricando il certificato in
+  // un secondo momento, non durante l'iscrizione): niente pulsante "salta",
+  // e dopo il salvataggio si torna alla tessera invece che al contratto.
+  readonly alreadySubscribed = signal(false);
 
   constructor(
     private readonly auth: AuthService,
@@ -31,9 +35,37 @@ export class CertificateComponent {
     private readonly router: Router,
   ) {}
 
+  async ngOnInit(): Promise<void> {
+    const userId = this.auth.user()?.id;
+    if (!userId) {
+      return;
+    }
+
+    if (environment.mock) {
+      this.alreadySubscribed.set(!!this.mock.getLatestSubscription(userId));
+      return;
+    }
+
+    const { data } = await this.supabase.client
+      .from('subscriptions')
+      .select('id')
+      .eq('member_id', userId)
+      .limit(1)
+      .maybeSingle();
+    this.alreadySubscribed.set(!!data);
+  }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.certificateFile = input.files?.[0] ?? null;
+  }
+
+  skip(): void {
+    this.router.navigateByUrl('/iscriviti/contratto');
+  }
+
+  private nextRoute(): string {
+    return this.alreadySubscribed() ? '/tessera' : '/iscriviti/contratto';
   }
 
   async submit(): Promise<void> {
@@ -77,7 +109,7 @@ export class CertificateComponent {
         }
       }
 
-      this.router.navigateByUrl('/iscriviti/contratto');
+      this.router.navigateByUrl(this.nextRoute());
     } catch {
       this.errorMessage.set(this.t.errorGeneric);
     } finally {

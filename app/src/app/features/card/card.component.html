@@ -18,6 +18,12 @@
         }
       </div>
 
+      @if (certificateReminderDate()) {
+        <a class="certificate-reminder" routerLink="/iscriviti/certificato">
+          {{ t.certificateReminder }} {{ certificateReminderDate() }}. {{ t.uploadCertificate }}
+        </a>
+      }
+
       @if (qrDataUrl()) {
         <img class="qr" [src]="qrDataUrl()" alt="QR di accesso" />
         <div class="progress-track">

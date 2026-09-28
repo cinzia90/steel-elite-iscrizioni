@@ -8,13 +8,21 @@ export interface CertificateForCheckin {
   expiry_date: string; // ISO date
 }
 
+// Il certificato è facoltativo al momento dell'iscrizione: un member ha
+// graceDays giorni dalla registrazione per caricarlo prima che l'accesso
+// venga bloccato. Una volta caricato, valgono le regole consuete (scaduto o,
+// se richiesto, non ancora approvato -> non valido).
 export function isCertificateValidForCheckin(
   certificate: CertificateForCheckin | null,
   requireApproved: boolean,
   now: Date,
+  memberCreatedAt: Date,
+  graceDays: number,
 ): boolean {
   if (!certificate) {
-    return false;
+    const deadline = new Date(memberCreatedAt);
+    deadline.setDate(deadline.getDate() + graceDays);
+    return now.getTime() < deadline.getTime();
   }
   if (requireApproved && certificate.status !== 'approved') {
     return false;

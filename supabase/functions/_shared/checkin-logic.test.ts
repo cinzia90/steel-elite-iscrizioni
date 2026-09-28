@@ -63,34 +63,45 @@ Deno.test('evaluateCheckin checks token validity before anything else', () => {
   assertEquals(evaluateCheckin(input), { result: 'denied', reason: 'invalid_token' });
 });
 
-Deno.test('isCertificateValidForCheckin rejects a missing certificate', () => {
-  assertEquals(isCertificateValidForCheckin(null, true, now), false);
+Deno.test('isCertificateValidForCheckin accepts a missing certificate within the grace period', () => {
+  const registeredAt = new Date('2026-06-10T09:00:00Z'); // 5 giorni prima di "now"
+  assertEquals(isCertificateValidForCheckin(null, true, now, registeredAt, 10), true);
+});
+
+Deno.test('isCertificateValidForCheckin rejects a missing certificate once the grace period has elapsed', () => {
+  const registeredAt = new Date('2026-06-01T09:00:00Z'); // 14 giorni prima di "now"
+  assertEquals(isCertificateValidForCheckin(null, true, now, registeredAt, 10), false);
+});
+
+Deno.test('isCertificateValidForCheckin rejects a missing certificate exactly at the grace deadline', () => {
+  const registeredAt = new Date('2026-06-05T18:00:00Z'); // esattamente 10 giorni prima di "now"
+  assertEquals(isCertificateValidForCheckin(null, true, now, registeredAt, 10), false);
 });
 
 Deno.test('isCertificateValidForCheckin rejects a pending certificate when approval is required', () => {
   assertEquals(
-    isCertificateValidForCheckin({ status: 'pending', expiry_date: '2026-12-31' }, true, now),
+    isCertificateValidForCheckin({ status: 'pending', expiry_date: '2026-12-31' }, true, now, now, 10),
     false,
   );
 });
 
 Deno.test('isCertificateValidForCheckin accepts a pending certificate when approval is not required', () => {
   assertEquals(
-    isCertificateValidForCheckin({ status: 'pending', expiry_date: '2026-12-31' }, false, now),
+    isCertificateValidForCheckin({ status: 'pending', expiry_date: '2026-12-31' }, false, now, now, 10),
     true,
   );
 });
 
 Deno.test('isCertificateValidForCheckin rejects an expired certificate even if approved', () => {
   assertEquals(
-    isCertificateValidForCheckin({ status: 'approved', expiry_date: '2026-06-14' }, true, now),
+    isCertificateValidForCheckin({ status: 'approved', expiry_date: '2026-06-14' }, true, now, now, 10),
     false,
   );
 });
 
 Deno.test('isCertificateValidForCheckin accepts an approved, unexpired certificate', () => {
   assertEquals(
-    isCertificateValidForCheckin({ status: 'approved', expiry_date: '2026-06-15' }, true, now),
+    isCertificateValidForCheckin({ status: 'approved', expiry_date: '2026-06-15' }, true, now, now, 10),
     true,
   );
 });

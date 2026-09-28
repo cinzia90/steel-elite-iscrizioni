@@ -77,6 +77,7 @@ export interface MockSettings {
   gym_name: string;
   anti_passback_minutes: number;
   require_approved_certificate: boolean;
+  certificate_grace_days: number;
   registration_fee_cents: number;
   whatsapp_support: string | null;
 }
@@ -94,7 +95,9 @@ export interface MockState {
   currentUserId: string | null;
 }
 
-const STORAGE_KEY = 'se-mock-state-v1';
+// v2: aggiunge settings.certificate_grace_days — bump per forzare il
+// reseed di eventuale stato demo salvato prima di questo campo.
+const STORAGE_KEY = 'se-mock-state-v2';
 
 function uuid(): string {
   return crypto.randomUUID();
@@ -232,6 +235,7 @@ export function seedState(): MockState {
       gym_name: 'Steel Elite',
       anti_passback_minutes: 120,
       require_approved_certificate: true,
+      certificate_grace_days: 10,
       registration_fee_cents: 3000,
       whatsapp_support: null,
     },

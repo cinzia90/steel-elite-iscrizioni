@@ -18,7 +18,11 @@
     }
 
     <button type="submit" [disabled]="loading()">
-      {{ loading() ? t.submitting : t.submit }}
+      {{ loading() ? t.submitting : (alreadySubscribed() ? t.submitReturning : t.submit) }}
     </button>
+
+    @if (!alreadySubscribed()) {
+      <button type="button" class="skip" (click)="skip()">{{ t.skip }}</button>
+    }
   </form>
 </div>

@@ -76,6 +76,17 @@ h1 {
   color: var(--se-silver-dark);
 }
 
+.certificate-reminder {
+  display: block;
+  font-size: 12px;
+  color: var(--se-gold-light);
+  background: rgba(201, 162, 39, 0.12);
+  border: 1px dashed var(--se-gold);
+  border-radius: var(--se-radius-sm);
+  padding: var(--se-space-2);
+  text-decoration: none;
+}
+
 .qr {
   width: 200px;
   height: 200px;

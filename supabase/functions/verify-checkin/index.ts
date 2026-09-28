@@ -36,7 +36,7 @@ interface AccessPayload {
 async function buildMemberSnapshot(admin: any, memberId: string) {
   const { data: profile } = await admin
     .from('profiles')
-    .select('first_name, last_name, photo_path')
+    .select('first_name, last_name, photo_path, created_at')
     .eq('id', memberId)
     .single();
 
@@ -70,6 +70,7 @@ async function buildMemberSnapshot(admin: any, memberId: string) {
     planName: plan?.name ?? null,
     endDate: subscription?.end_date ?? null,
     certificateStatus: certificate?.status ?? 'missing',
+    memberCreatedAt: profile?.created_at ? new Date(profile.created_at) : new Date(0),
     subscription,
     certificate,
   };
@@ -110,10 +111,11 @@ Deno.serve(async (req) => {
 
   const { data: settings } = await admin
     .from('settings')
-    .select('anti_passback_minutes, require_approved_certificate')
+    .select('anti_passback_minutes, require_approved_certificate, certificate_grace_days')
     .single();
   const antiPassbackMinutes = settings?.anti_passback_minutes ?? 120;
   const requireApprovedCertificate = settings?.require_approved_certificate ?? true;
+  const certificateGraceDays = settings?.certificate_grace_days ?? 10;
 
   if (mode === 'manual') {
     const memberId = body.memberId as string | undefined;
@@ -178,7 +180,13 @@ Deno.serve(async (req) => {
   const snapshot = await buildMemberSnapshot(admin, payload.sub);
 
   const subscriptionActive = isSubscriptionEligibleForAccess(snapshot.subscription, now);
-  const certificateOk = isCertificateValidForCheckin(snapshot.certificate, requireApprovedCertificate, now);
+  const certificateOk = isCertificateValidForCheckin(
+    snapshot.certificate,
+    requireApprovedCertificate,
+    now,
+    snapshot.memberCreatedAt,
+    certificateGraceDays,
+  );
 
   const { data: lastGranted } = await admin
     .from('access_logs')

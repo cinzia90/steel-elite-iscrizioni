@@ -83,3 +83,11 @@ button {
   font-size: 13px;
   margin: 0;
 }
+
+.skip {
+  margin-top: 0;
+  background: none;
+  color: var(--se-silver-dark);
+  font-weight: 600;
+  text-decoration: underline;
+}

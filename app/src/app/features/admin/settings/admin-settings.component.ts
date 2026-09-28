@@ -23,6 +23,7 @@ export class AdminSettingsComponent implements OnInit {
   gymName = '';
   antiPassbackMinutes = 120;
   requireApprovedCertificate = true;
+  certificateGraceDays = 10;
   registrationFeeEuro = 30;
   whatsappSupport = '';
 
@@ -34,6 +35,7 @@ export class AdminSettingsComponent implements OnInit {
       this.gymName = settings.gym_name;
       this.antiPassbackMinutes = settings.anti_passback_minutes;
       this.requireApprovedCertificate = settings.require_approved_certificate;
+      this.certificateGraceDays = settings.certificate_grace_days;
       this.registrationFeeEuro = settings.registration_fee_cents / 100;
       this.whatsappSupport = settings.whatsapp_support ?? '';
       this.loading.set(false);
@@ -45,6 +47,7 @@ export class AdminSettingsComponent implements OnInit {
       this.gymName = data.gym_name;
       this.antiPassbackMinutes = data.anti_passback_minutes;
       this.requireApprovedCertificate = data.require_approved_certificate;
+      this.certificateGraceDays = data.certificate_grace_days;
       this.registrationFeeEuro = data.registration_fee_cents / 100;
       this.whatsappSupport = data.whatsapp_support ?? '';
     }
@@ -60,6 +63,7 @@ export class AdminSettingsComponent implements OnInit {
       gym_name: this.gymName,
       anti_passback_minutes: this.antiPassbackMinutes,
       require_approved_certificate: this.requireApprovedCertificate,
+      certificate_grace_days: this.certificateGraceDays,
       registration_fee_cents: Math.round(this.registrationFeeEuro * 100),
       whatsapp_support: this.whatsappSupport || null,
     };

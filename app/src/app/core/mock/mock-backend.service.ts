@@ -395,6 +395,7 @@ export class MockBackendService {
       planName: plan?.name ?? null,
       endDate: subscription?.end_date ?? null,
       certificateStatus: certificate?.status ?? 'missing',
+      memberCreatedAt: profile ? new Date(profile.created_at) : new Date(0),
       subscription,
       certificate,
     };
@@ -441,6 +442,8 @@ export class MockBackendService {
         : null,
       this.state.settings.require_approved_certificate,
       new Date(),
+      snapshot.memberCreatedAt,
+      this.state.settings.certificate_grace_days,
     );
 
     const lastGranted = [...this.state.accessLogs]

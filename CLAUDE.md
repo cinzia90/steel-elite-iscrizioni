@@ -54,7 +54,7 @@ Il ruolo sta in `profiles.role` e va letto nelle policy RLS con una funzione sec
 - **contract_otps**: `id`, `member_id`, `code_hash`, `expires_at`, `attempts`, `used_at`.
 - **medical_certificates**: `id`, `member_id`, `file_path`, `expiry_date`, `status` (`pending`|`approved`|`rejected`), `reviewed_by`, `reviewed_at`, `notes`.
 - **access_logs**: `id`, `member_id`, `staff_id`, `scanned_at`, `result` (`granted`|`denied`), `reason`, `token_jti` (unique).
-- **settings** (riga singola): `gym_name`, `anti_passback_minutes` (default 120), `require_approved_certificate` (bool), `whatsapp_support`.
+- **settings** (riga singola): `gym_name`, `anti_passback_minutes` (default 120), `require_approved_certificate` (bool), `certificate_grace_days` (default 10, aggiunto in un secondo momento), `registration_fee_cents`, `whatsapp_support`.
 
 ## Storage
 
@@ -69,7 +69,7 @@ Route pubblica `/iscriviti`, raggiungibile dal QR della locandina.
 1. **Scelta abbonamento** tra i `plans` attivi.
 2. **Account**: email + password (o magic link).
 3. **Dati anagrafici + foto** (scattata con la fotocamera o caricata). La foto è obbligatoria: serve allo staff al check-in.
-4. **Certificato medico**: upload PDF/immagine + data di scadenza.
+4. **Certificato medico**: upload PDF/immagine + data di scadenza. **Facoltativo a questo punto** (pulsante "salta per ora"): il member ha `settings.certificate_grace_days` giorni (default 10) dalla registrazione (`profiles.created_at`) per caricarlo — vedi "Tessera con QR dinamico" per cosa succede alla scadenza. Chi lo salta può caricarlo più tardi dalla tessera o tornando su questo stesso step.
 5. **Contratto**: anteprima del testo (template versionato, testo fornito dal proprietario, placeholder per ora), checkbox di accettazione di contratto, regolamento e informativa privacy, poi **codice OTP a 6 cifre via email**. Alla conferma una Edge Function genera il PDF, ne calcola lo SHA-256 e salva il record in `contracts` con IP e user agent.
 6. **Pagamento**: Stripe Checkout. Al ritorno l'utente vede "pagamento in verifica" finché il webhook non attiva l'abbonamento.
 7. **Tessera**: redirect a `/tessera` con il QR.
@@ -83,6 +83,7 @@ Route `/tessera`, pensata per essere aperta dalla schermata home (PWA installabi
 - Mostra foto, nome, piano, scadenza e un QR che si rigenera ogni 30 secondi, con una barra di avanzamento visibile.
 - Il QR contiene un **token firmato emesso dal server**: la Edge Function `issue-access-token` (utente autenticato) restituisce un JWT HS256 con `sub` (member_id), `jti` (uuid casuale), `iat`, `exp` = +45 secondi. Il segreto di firma sta solo nei secrets delle Edge Functions.
 - Il token viene emesso solo se l'abbonamento è attivo; altrimenti la tessera mostra lo stato (scaduto, in attesa di pagamento, certificato mancante) e un pulsante per rinnovare.
+- **Certificato medico mancante**: non blocca subito. Entro `settings.certificate_grace_days` giorni dalla registrazione la tessera mostra comunque il QR, con un promemoria non bloccante e la data limite. Superata la scadenza senza certificato caricato, la tessera si blocca con l'invito a caricarlo (stesso comportamento applicato server-side in `verify-checkin`, non solo lato client). Un certificato caricato ma non ancora approvato (se `require_approved_certificate` è attivo) blocca sempre, indipendentemente dalla tolleranza.
 - Suggerisci all'utente di alzare la luminosità dello schermo (messaggio discreto).
 - Se non c'è connessione: messaggio chiaro, niente QR finto.
 
@@ -96,7 +97,7 @@ Route `/staff/check-in`, protetta (ruolo `staff` o `admin`).
   1. firma e scadenza del JWT;
   2. `jti` mai usato prima (vincolo unique su `access_logs.token_jti`);
   3. abbonamento attivo e non scaduto;
-  4. certificato medico presente, non scaduto e (se `require_approved_certificate`) approvato;
+  4. certificato medico valido: presente e non scaduto (o, se ancora mancante, entro la finestra di tolleranza `certificate_grace_days` dalla registrazione) e, se `require_approved_certificate`, approvato;
   5. anti-passback: nessun ingresso `granted` negli ultimi `anti_passback_minutes`.
 - Registra **sempre** un record in `access_logs`, anche quando nega l'accesso, con il motivo.
 - Risponde con: esito, nome, signed URL della foto (breve scadenza), piano, data di scadenza, stato del certificato, motivo del rifiuto.

@@ -19,6 +19,11 @@
       </label>
 
       <label>
+        {{ t.certificateGraceDays }}
+        <input type="number" name="certificateGraceDays" [(ngModel)]="certificateGraceDays" />
+      </label>
+
+      <label>
         {{ t.registrationFeeEuro }}
         <input type="number" step="0.01" name="registrationFeeEuro" [(ngModel)]="registrationFeeEuro" />
       </label>
