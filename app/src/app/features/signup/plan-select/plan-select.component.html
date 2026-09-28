@@ -1,6 +1,11 @@
 <div class="plan-page">
-  <img class="logo" src="assets/logo.jpg" alt="Steel Elite" />
-  <h1>{{ t.title }}</h1>
+  <div class="hero">
+    <img class="logo" src="assets/logo.jpg" alt="Steel Elite" />
+    <div class="rule"></div>
+    <span class="eyebrow">{{ t.eyebrow }}</span>
+    <h1>{{ t.title }}</h1>
+    <p class="subtitle">{{ t.subtitle }}</p>
+  </div>
 
   @if (loading()) {
     <p class="status">{{ t.loading }}</p>
@@ -31,4 +36,6 @@
       </div>
     </section>
   }
+
+  <footer class="page-footer">{{ t.footer }}</footer>
 </div>

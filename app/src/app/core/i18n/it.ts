@@ -13,7 +13,9 @@ export const it = {
   },
   signup: {
     planSelect: {
+      eyebrow: 'Iscrizione online',
       title: 'Scegli il tuo abbonamento',
+      subtitle: 'Bastano pochi minuti: scegli il piano, crea il tuo account e sei pronto per allenarti.',
       categories: {
         open: 'Palestra Open',
         pt_privato: 'Personal Training Privato',
@@ -22,6 +24,7 @@ export const it = {
       choose: 'Scegli',
       loading: 'Caricamento piani…',
       error: 'Impossibile caricare i piani. Riprova più tardi.',
+      footer: 'Racale · Via Udine, 10',
     },
     account: {
       title: 'Crea il tuo account',

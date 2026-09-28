@@ -1,5 +1,4 @@
-// Produzione: valori reali impostati come variabili d'ambiente su Netlify
-// e sostituiti in fase di build (mai committare segreti reali qui).
+// File generato in build da scripts/set-env.js — non modificare a mano.
 export const environment = {
   production: true,
   supabaseUrl: 'https://placeholder.supabase.co',
