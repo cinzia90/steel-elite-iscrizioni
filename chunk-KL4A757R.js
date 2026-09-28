@@ -41,7 +41,7 @@ function AdminQrPosterComponent_Conditional_17_Template(rf, ctx) {
 var AdminQrPosterComponent = class _AdminQrPosterComponent {
   t = it.admin.qrPoster;
   qrDataUrl = signal(null);
-  signupUrl = `${window.location.origin}/iscriviti`;
+  signupUrl = new URL("iscriviti", document.baseURI).toString();
   ngOnInit() {
     return __async(this, null, function* () {
       this.qrDataUrl.set(yield QRCode.toDataURL(this.signupUrl, { margin: 1, width: 600, color: { dark: "#050505", light: "#ffffff" } }));
@@ -123,9 +123,9 @@ var AdminQrPosterComponent = class _AdminQrPosterComponent {
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AdminQrPosterComponent, { className: "AdminQrPosterComponent", filePath: "src/app/features/admin/qr-poster/admin-qr-poster.component.ts", lineNumber: 18 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AdminQrPosterComponent, { className: "AdminQrPosterComponent", filePath: "src/app/features/admin/qr-poster/admin-qr-poster.component.ts", lineNumber: 20 });
 })();
 export {
   AdminQrPosterComponent
 };
-//# sourceMappingURL=chunk-F74N5JXW.js.map
+//# sourceMappingURL=chunk-KL4A757R.js.map

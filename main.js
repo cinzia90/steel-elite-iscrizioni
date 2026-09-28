@@ -175,7 +175,7 @@ var routes = [
       },
       {
         path: "qr-locandina",
-        loadComponent: () => import("./chunk-F74N5JXW.js").then((m) => m.AdminQrPosterComponent)
+        loadComponent: () => import("./chunk-KL4A757R.js").then((m) => m.AdminQrPosterComponent)
       },
       {
         path: "impostazioni",
