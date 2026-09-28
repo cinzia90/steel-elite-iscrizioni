@@ -105,6 +105,11 @@ export const routes: Routes = [
           import('./features/admin/contracts/admin-contracts.component').then((m) => m.AdminContractsComponent),
       },
       {
+        path: 'qr-locandina',
+        loadComponent: () =>
+          import('./features/admin/qr-poster/admin-qr-poster.component').then((m) => m.AdminQrPosterComponent),
+      },
+      {
         path: 'impostazioni',
         loadComponent: () =>
           import('./features/admin/settings/admin-settings.component').then((m) => m.AdminSettingsComponent),

@@ -139,7 +139,17 @@ export const it = {
       accessLogs: 'Ingressi',
       staff: 'Staff',
       contracts: 'Contratti',
+      qrPoster: 'QR Locandina',
       settings: 'Impostazioni',
+    },
+    qrPoster: {
+      title: 'QR per la locandina',
+      description:
+        'Stampa questa pagina o scarica il QR e inseriscilo nella locandina in palestra: chi lo inquadra arriva direttamente alla pagina di iscrizione, senza bisogno di aiuto.',
+      scanHint: 'Inquadra per iscriverti',
+      download: 'Scarica QR (PNG)',
+      print: 'Stampa locandina',
+      urlLabel: 'Link diretto',
     },
     dashboard: {
       title: 'Dashboard',

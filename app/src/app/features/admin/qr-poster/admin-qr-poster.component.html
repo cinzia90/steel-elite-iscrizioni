@@ -1,0 +1,25 @@
+<div class="qr-poster-page">
+  <div class="controls">
+    <h1>{{ t.title }}</h1>
+    <p class="description">{{ t.description }}</p>
+    <div class="actions">
+      <button (click)="download()">{{ t.download }}</button>
+      <button (click)="print()">{{ t.print }}</button>
+    </div>
+  </div>
+
+  <div class="poster">
+    <img class="logo" src="assets/logo.jpg" alt="Steel Elite" />
+    <div class="rule"></div>
+    <div class="wordmark">Steel Elite</div>
+
+    <div class="qr-frame">
+      @if (qrDataUrl()) {
+        <img class="qr" [src]="qrDataUrl()" alt="QR iscrizione" />
+      }
+    </div>
+
+    <div class="scan-hint">{{ t.scanHint }}</div>
+    <div class="url-label">{{ signupUrl }}</div>
+  </div>
+</div>
