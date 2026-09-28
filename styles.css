@@ -1,0 +1,37 @@
+/* src/styles.scss */
+:root {
+  --se-gold: #C9A227;
+  --se-gold-light: #F4D374;
+  --se-silver: #F2F2F2;
+  --se-silver-dark: #A8A8A8;
+  --se-black: #050505;
+  --se-font-display: "Bricolage Grotesque", sans-serif;
+  --se-font-body: "Inter", sans-serif;
+  --se-radius-sm: 8px;
+  --se-radius-md: 16px;
+  --se-radius-lg: 24px;
+  --se-space-1: 4px;
+  --se-space-2: 8px;
+  --se-space-3: 16px;
+  --se-space-4: 24px;
+  --se-space-5: 40px;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--se-black);
+  color: var(--se-silver);
+  font-family: var(--se-font-body);
+}
+h1,
+h2,
+h3 {
+  font-family: var(--se-font-display);
+}
+
+/* angular:styles/global:styles */
+/*# sourceMappingURL=styles.css.map */

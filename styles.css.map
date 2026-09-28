@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/shared/styles/_tokens.scss", "src/styles.scss"],
+  "sourcesContent": ["// Design token Steel Elite — vedi progetto palestra-steel-elite per il sistema visivo completo\n:root {\n  --se-gold: #C9A227;\n  --se-gold-light: #F4D374;\n  --se-silver: #F2F2F2;\n  --se-silver-dark: #A8A8A8;\n  --se-black: #050505;\n\n  --se-font-display: 'Bricolage Grotesque', sans-serif;\n  --se-font-body: 'Inter', sans-serif;\n\n  --se-radius-sm: 8px;\n  --se-radius-md: 16px;\n  --se-radius-lg: 24px;\n\n  --se-space-1: 4px;\n  --se-space-2: 8px;\n  --se-space-3: 16px;\n  --se-space-4: 24px;\n  --se-space-5: 40px;\n}\n", "@use 'app/shared/styles/tokens';\n\n* {\n  box-sizing: border-box;\n}\n\nhtml,\nbody {\n  margin: 0;\n  padding: 0;\n  background: var(--se-black);\n  color: var(--se-silver);\n  font-family: var(--se-font-body);\n}\n\nh1,\nh2,\nh3 {\n  font-family: var(--se-font-display);\n}\n"],
+  "mappings": ";AACA;AACE,aAAA;AACA,mBAAA;AACA,eAAA;AACA,oBAAA;AACA,cAAA;AAEA,qBAAA,qBAAA,EAAA;AACA,kBAAA,OAAA,EAAA;AAEA,kBAAA;AACA,kBAAA;AACA,kBAAA;AAEA,gBAAA;AACA,gBAAA;AACA,gBAAA;AACA,gBAAA;AACA,gBAAA;;ACjBF;AACE,cAAA;;AAGF;AAAA;AAEE,UAAA;AACA,WAAA;AACA,cAAA,IAAA;AACA,SAAA,IAAA;AACA,eAAA,IAAA;;AAGF;AAAA;AAAA;AAGE,eAAA,IAAA;;",
+  "names": []
+}

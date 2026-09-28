@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Steel Elite</title>
+  <script>
+    // Supporto SPA per GitHub Pages: codifica il percorso richiesto e
+    // reindirizza a index.html, che lo decodifica prima del bootstrap.
+    // https://github.com/rafgraph/spa-github-pages
+    var pathSegmentsToKeep = 1; // /steel-elite-iscrizioni/
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+      l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+      (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+      l.hash
+    );
+  </script>
+</head>
+<body></body>
+</html>

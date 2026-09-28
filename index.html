@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Steel Elite — Iscrizione e accessi</title>
+  <meta name="description" content="Iscriviti online a Steel Elite, gestisci la tua tessera con QR dinamico e accedi in palestra senza tornelli.">
+  <base href="/steel-elite-iscrizioni/">
+  <script>
+    // Supporto SPA per GitHub Pages (demo su cinzia90.github.io): decodifica
+    // il percorso codificato da 404.html e lo ripristina prima che Angular
+    // faccia il bootstrap, così refresh e link diretti funzionano.
+    // https://github.com/rafgraph/spa-github-pages
+    (function (l) {
+      if (l.search[1] === '/') {
+        var decoded = l.search
+          .slice(1)
+          .split('&')
+          .map(function (s) {
+            return s.replace(/~and~/g, '&');
+          })
+          .join('?');
+        window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+      }
+    })(window.location);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Steel Elite">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"></head>
+<body>
+  <app-root></app-root>
+  <noscript>Per usare questa applicazione è necessario abilitare JavaScript.</noscript>
+<link rel="modulepreload" href="chunk-NKGUCW2I.js"><link rel="modulepreload" href="chunk-5JC44RXL.js"><link rel="modulepreload" href="chunk-NZILXJS5.js"><link rel="modulepreload" href="chunk-QKULHZCD.js"><script src="polyfills.js" type="module"></script><script src="main.js" type="module"></script></body>
+</html>

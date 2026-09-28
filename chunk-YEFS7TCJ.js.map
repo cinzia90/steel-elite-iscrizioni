@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/signup/signup-state.service.ts"],
+  "sourcesContent": ["import { Injectable, signal } from '@angular/core';\n\nconst STORAGE_KEY = 'se-signup-selected-plan-id';\n\n// Stato del flusso di iscrizione condiviso tra gli step. Il piano scelto è\n// tenuto anche in sessionStorage così un refresh a metà flusso non lo perde.\n@Injectable({ providedIn: 'root' })\nexport class SignupStateService {\n  readonly selectedPlanId = signal<string | null>(this.readStoredPlanId());\n\n  setSelectedPlanId(planId: string): void {\n    this.selectedPlanId.set(planId);\n    sessionStorage.setItem(STORAGE_KEY, planId);\n  }\n\n  clear(): void {\n    this.selectedPlanId.set(null);\n    sessionStorage.removeItem(STORAGE_KEY);\n  }\n\n  private readStoredPlanId(): string | null {\n    try {\n      return sessionStorage.getItem(STORAGE_KEY);\n    } catch {\n      return null;\n    }\n  }\n}\n"],
+  "mappings": ";;;;;;;;AAEA,IAAM,cAAc;AAKd,IAAO,qBAAP,MAAO,oBAAkB;EACpB,iBAAiB,OAAsB,KAAK,iBAAgB,CAAE;EAEvE,kBAAkB,QAAc;AAC9B,SAAK,eAAe,IAAI,MAAM;AAC9B,mBAAe,QAAQ,aAAa,MAAM;EAC5C;EAEA,QAAK;AACH,SAAK,eAAe,IAAI,IAAI;AAC5B,mBAAe,WAAW,WAAW;EACvC;EAEQ,mBAAgB;AACtB,QAAI;AACF,aAAO,eAAe,QAAQ,WAAW;IAC3C,QAAQ;AACN,aAAO;IACT;EACF;;qCAnBW,qBAAkB;EAAA;4EAAlB,qBAAkB,SAAlB,oBAAkB,WAAA,YADL,OAAM,CAAA;;;sEACnB,oBAAkB,CAAA;UAD9B;WAAW,EAAE,YAAY,OAAM,CAAE;;;",
+  "names": []
+}

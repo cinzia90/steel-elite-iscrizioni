@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/features/admin/dashboard/admin-dashboard.component.scss"],
+  "sourcesContent": [".dashboard-page {\n  max-width: 960px;\n  margin: 0 auto;\n  padding: var(--se-space-4);\n}\n\nh1 {\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n  margin-bottom: var(--se-space-4);\n}\n\n.status {\n  color: var(--se-silver-dark);\n}\n\n.stats-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));\n  gap: var(--se-space-3);\n}\n\n.stat-card {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  padding: var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: var(--se-radius-md);\n}\n\n.value {\n  font-family: var(--se-font-display);\n  font-size: 32px;\n  font-weight: 800;\n  color: var(--se-gold-light);\n}\n\n.label {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n}\n"],
+  "mappings": ";AAAA,CAAA;AACE,aAAA;AACA,UAAA,EAAA;AACA,WAAA,IAAA;;AAGF;AACE,SAAA,IAAA;AACA,kBAAA;AACA,kBAAA;AACA,aAAA;AACA,iBAAA,IAAA;;AAGF,CAAA;AACE,SAAA,IAAA;;AAGF,CAAA;AACE,WAAA;AACA,yBAAA,OAAA,QAAA,EAAA,OAAA,KAAA,EAAA;AACA,OAAA,IAAA;;AAGF,CAAA;AACE,WAAA;AACA,kBAAA;AACA,OAAA;AACA,WAAA,IAAA;AACA,cAAA,KAAA,GAAA,EAAA,GAAA,EAAA,GAAA,EAAA;AACA,UAAA,IAAA,MAAA,KAAA,GAAA,EAAA,GAAA,EAAA,GAAA,EAAA;AACA,iBAAA,IAAA;;AAGF,CAAA;AACE,eAAA,IAAA;AACA,aAAA;AACA,eAAA;AACA,SAAA,IAAA;;AAGF,CAAA;AACE,aAAA;AACA,SAAA,IAAA;;",
+  "names": []
+}
