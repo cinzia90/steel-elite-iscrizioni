@@ -1,0 +1,43 @@
+<div class="account-page">
+  @if (awaitingConfirmation()) {
+    <div class="card">
+      <p>{{ t.confirmEmail }}</p>
+    </div>
+  } @else {
+    <form class="card" (ngSubmit)="submit()">
+      <h1>{{ t.title }}</h1>
+
+      <label>
+        {{ t.firstName }}
+        <input type="text" name="firstName" [(ngModel)]="firstName" required />
+      </label>
+
+      <label>
+        {{ t.lastName }}
+        <input type="text" name="lastName" [(ngModel)]="lastName" required />
+      </label>
+
+      <label>
+        {{ t.email }}
+        <input type="email" name="email" [(ngModel)]="email" required autocomplete="email" />
+      </label>
+
+      <label>
+        {{ t.password }}
+        <input type="password" name="password" [(ngModel)]="password" required minlength="8" autocomplete="new-password" />
+      </label>
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+
+      <button type="submit" [disabled]="loading()">
+        {{ loading() ? t.submitting : t.submit }}
+      </button>
+
+      <p class="login-hint">
+        {{ t.alreadyHaveAccount }} <a routerLink="/login">{{ t.login }}</a>
+      </p>
+    </form>
+  }
+</div>

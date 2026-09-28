@@ -2,6 +2,6 @@
 // e sostituiti in fase di build (mai committare segreti reali qui).
 export const environment = {
   production: true,
-  supabaseUrl: '',
-  supabaseAnonKey: '',
+  supabaseUrl: 'https://placeholder.supabase.co',
+  supabaseAnonKey: 'placeholder-anon-key',
 };

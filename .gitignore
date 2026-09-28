@@ -12,3 +12,6 @@ supabase/.temp
 .idea/
 .DS_Store
 Thumbs.db
+
+# Log locali
+*.log

@@ -1,0 +1,34 @@
+<div class="plan-page">
+  <img class="logo" src="assets/logo.jpg" alt="Steel Elite" />
+  <h1>{{ t.title }}</h1>
+
+  @if (loading()) {
+    <p class="status">{{ t.loading }}</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="status error">{{ errorMessage() }}</p>
+  }
+
+  @for (group of groups(); track group.category) {
+    <section class="group">
+      <h2>{{ group.label }}</h2>
+      <div class="plans">
+        @for (plan of group.plans; track plan.id) {
+          <div class="plan-card">
+            <div class="plan-info">
+              <span class="plan-name">{{ plan.name }}</span>
+              @if (plan.description) {
+                <span class="plan-description">{{ plan.description }}</span>
+              }
+            </div>
+            <div class="plan-action">
+              <span class="plan-price">{{ formatPrice(plan.price_cents) }}</span>
+              <button (click)="choose(plan)">{{ t.choose }}</button>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  }
+</div>
