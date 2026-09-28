@@ -1,12 +1,27 @@
-import { Component, ElementRef, OnDestroy, ViewChild, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser';
 import { SupabaseService } from '../../../core/services/supabase.service';
 import { AuthService } from '../../../core/auth/auth.service';
 import { MockBackendService } from '../../../core/mock/mock-backend.service';
 import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
+
+// Il QR della tessera contiene un link (/staff/check-in?token=...), non il
+// solo token: così un dipendente può inquadrarlo con la normale fotocamera
+// del telefono. Se invece è lo scanner live dell'app a leggerlo (puntato su
+// un altro schermo), il testo decodificato è comunque quel link intero:
+// va estratto il parametro token in entrambi i casi.
+function extractToken(scannedText: string): string {
+  try {
+    const url = new URL(scannedText);
+    return url.searchParams.get('token') ?? scannedText;
+  } catch {
+    return scannedText;
+  }
+}
 
 interface CheckinResponse {
   result: 'granted' | 'denied';
@@ -15,6 +30,7 @@ interface CheckinResponse {
   photoUrl: string | null;
   planName: string | null;
   endDate: string | null;
+  sessionsRemaining: number | null;
   certificateStatus: string;
 }
 
@@ -33,7 +49,7 @@ const RESULT_DISPLAY_MS = 3000;
   templateUrl: './check-in.component.html',
   styleUrl: './check-in.component.scss',
 })
-export class CheckInComponent implements OnDestroy {
+export class CheckInComponent implements OnInit, OnDestroy {
   readonly t = it.checkin;
 
   @ViewChild('video') videoElement?: ElementRef<HTMLVideoElement>;
@@ -58,7 +74,19 @@ export class CheckInComponent implements OnDestroy {
     private readonly supabase: SupabaseService,
     private readonly auth: AuthService,
     private readonly mock: MockBackendService,
+    private readonly route: ActivatedRoute,
   ) {}
+
+  ngOnInit(): void {
+    // Il dipendente ha inquadrato il QR del cliente con la fotocamera
+    // normale del telefono (non lo scanner dell'app): il link apre questa
+    // pagina già con il token, verifichiamo subito senza bisogno di aprire
+    // manualmente lo scanner.
+    const token = this.route.snapshot.queryParamMap.get('token');
+    if (token) {
+      this.handleScan(token);
+    }
+  }
 
   ngOnDestroy(): void {
     this.stopScanning();
@@ -79,7 +107,7 @@ export class CheckInComponent implements OnDestroy {
         this.videoElement.nativeElement,
         (result) => {
           if (result && !this.processing) {
-            this.handleScan(result.getText());
+            this.handleScan(extractToken(result.getText()));
           }
         },
       );
@@ -249,5 +277,12 @@ export class CheckInComponent implements OnDestroy {
       return '';
     }
     return (this.t.reasons as Record<string, string>)[reason] ?? reason;
+  }
+
+  certificateStatusLabel(status: string | undefined): string {
+    if (!status) {
+      return '';
+    }
+    return (this.t.certificateStatuses as Record<string, string>)[status] ?? status;
   }
 }

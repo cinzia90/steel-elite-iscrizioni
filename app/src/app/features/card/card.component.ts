@@ -24,6 +24,16 @@ function certificateGraceDeadline(memberCreatedAt: string, graceDays: number): D
   return deadline;
 }
 
+// Il QR contiene un link, non il solo token: così un dipendente può
+// inquadrarlo con la normale fotocamera del telefono (non serve aprire
+// prima lo scanner dell'app) e atterra direttamente sulla pagina di
+// check-in, che verifica il token e mostra il risultato con tutti i dati.
+function buildCheckinUrl(token: string): string {
+  const url = new URL('staff/check-in', document.baseURI);
+  url.searchParams.set('token', token);
+  return url.toString();
+}
+
 @Component({
   selector: 'app-card',
   standalone: true,
@@ -254,7 +264,7 @@ export class CardComponent implements OnInit, OnDestroy {
       const userId = this.auth.user()?.id;
       const token = userId ? this.mock.issueAccessToken(userId) : null;
       this.rawToken.set(token);
-      this.qrDataUrl.set(token ? await QRCode.toDataURL(token, { margin: 1, width: 280 }) : null);
+      this.qrDataUrl.set(token ? await QRCode.toDataURL(buildCheckinUrl(token), { margin: 1, width: 280 }) : null);
       return;
     }
 
@@ -268,7 +278,7 @@ export class CardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.qrDataUrl.set(await QRCode.toDataURL(data.token, { margin: 1, width: 280 }));
+    this.qrDataUrl.set(await QRCode.toDataURL(buildCheckinUrl(data.token), { margin: 1, width: 280 }));
   }
 
   async copyToken(): Promise<void> {

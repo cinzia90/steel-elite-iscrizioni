@@ -53,11 +53,11 @@
             <p class="status">{{ t.pendingPayment }}</p>
           }
           @case ('expired') {
-            <p class="status">{{ t.expired }}</p>
+            <p class="status alert">{{ t.expired }}</p>
             <a routerLink="/iscriviti">{{ t.renew }}</a>
           }
           @case ('certificate_missing') {
-            <p class="status">{{ t.certificateMissing }}</p>
+            <p class="status alert">{{ t.certificateMissing }}</p>
             <a routerLink="/iscriviti/certificato">{{ t.uploadCertificate }}</a>
           }
           @case ('certificate_pending') {

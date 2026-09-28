@@ -37,6 +37,15 @@ h1 {
   color: #e05c5c;
 }
 
+.status.alert {
+  color: #ff8a8a;
+  font-weight: 700;
+  background: rgba(224, 92, 92, 0.12);
+  border: 1px solid #e05c5c;
+  border-radius: var(--se-radius-sm);
+  padding: var(--se-space-3);
+}
+
 .status-block {
   display: flex;
   flex-direction: column;

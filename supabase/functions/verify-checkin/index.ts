@@ -69,6 +69,7 @@ async function buildMemberSnapshot(admin: any, memberId: string) {
     photoUrl,
     planName: plan?.name ?? null,
     endDate: subscription?.end_date ?? null,
+    sessionsRemaining: subscription?.sessions_remaining ?? null,
     certificateStatus: certificate?.status ?? 'missing',
     memberCreatedAt: profile?.created_at ? new Date(profile.created_at) : new Date(0),
     subscription,
@@ -139,6 +140,7 @@ Deno.serve(async (req) => {
       photoUrl: snapshot.photoUrl,
       planName: snapshot.planName,
       endDate: snapshot.endDate,
+      sessionsRemaining: snapshot.sessionsRemaining,
       certificateStatus: snapshot.certificateStatus,
     });
   }
@@ -227,6 +229,7 @@ Deno.serve(async (req) => {
     photoUrl: snapshot.photoUrl,
     planName: snapshot.planName,
     endDate: snapshot.endDate,
+    sessionsRemaining: snapshot.sessionsRemaining,
     certificateStatus: snapshot.certificateStatus,
   });
 });

@@ -133,6 +133,13 @@ export const it = {
       certificate_invalid: 'Certificato medico mancante, scaduto o non approvato',
       anti_passback: 'Ingresso già registrato di recente',
     },
+    certificateStatuses: {
+      approved: 'Certificato approvato',
+      pending: 'Certificato in attesa di approvazione',
+      rejected: 'Certificato rifiutato',
+      missing: 'Certificato mancante',
+    },
+    sessionsRemaining: 'lezioni rimaste',
     cameraError: 'Impossibile accedere alla fotocamera.',
     errorGeneric: 'Si è verificato un errore durante la verifica.',
   },

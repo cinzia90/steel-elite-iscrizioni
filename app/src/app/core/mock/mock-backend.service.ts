@@ -424,17 +424,19 @@ export class MockBackendService {
 
   // ===== Check-in staff =====
 
-  private buildMemberSnapshot(memberId: string) {
+  private async buildMemberSnapshot(memberId: string) {
     const profile = this.state.profiles.find((p) => p.id === memberId);
     const subscription = this.getLatestSubscription(memberId);
     const plan = subscription ? this.state.plans.find((p) => p.id === subscription.plan_id) : null;
     const certificate = this.getLatestCertificate(memberId);
+    const photoUrl = profile?.photo_path ? await this.getSignedUrl(profile.photo_path) : null;
 
     return {
       memberName: profile ? `${profile.first_name ?? ''} ${profile.last_name ?? ''}`.trim() : '—',
-      photoUrl: null as string | null,
+      photoUrl,
       planName: plan?.name ?? null,
       endDate: subscription?.end_date ?? null,
+      sessionsRemaining: subscription?.sessions_remaining ?? null,
       certificateStatus: certificate?.status ?? 'missing',
       memberCreatedAt: profile ? new Date(profile.created_at) : new Date(0),
       subscription,
@@ -459,13 +461,14 @@ export class MockBackendService {
         photoUrl: null,
         planName: null,
         endDate: null,
+        sessionsRemaining: null,
         certificateStatus: 'missing',
       };
     }
 
     const notExpired = Math.floor(Date.now() / 1000) < payload.exp;
     const jtiAlreadyUsed = this.state.accessLogs.some((l) => l.token_jti === payload!.jti);
-    const snapshot = this.buildMemberSnapshot(payload.sub);
+    const snapshot = await this.buildMemberSnapshot(payload.sub);
 
     const subscriptionActive = isSubscriptionEligibleForAccess(
       snapshot.subscription
@@ -511,12 +514,13 @@ export class MockBackendService {
       photoUrl: snapshot.photoUrl,
       planName: snapshot.planName,
       endDate: snapshot.endDate,
+      sessionsRemaining: snapshot.sessionsRemaining,
       certificateStatus: snapshot.certificateStatus,
     };
   }
 
   async verifyCheckinManual(staffId: string, memberId: string) {
-    const snapshot = this.buildMemberSnapshot(memberId);
+    const snapshot = await this.buildMemberSnapshot(memberId);
     this.logAccess(memberId, staffId, 'granted', 'manual', null);
     return {
       result: 'granted' as const,
@@ -524,6 +528,7 @@ export class MockBackendService {
       photoUrl: snapshot.photoUrl,
       planName: snapshot.planName,
       endDate: snapshot.endDate,
+      sessionsRemaining: snapshot.sessionsRemaining,
       certificateStatus: snapshot.certificateStatus,
     };
   }
