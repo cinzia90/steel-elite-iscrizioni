@@ -126,6 +126,7 @@ Route `/admin`, ruolo `admin`.
 - **Piani**: CRUD, collegamento a `stripe_price_id`, attiva/disattiva.
 - **Ingressi**: log filtrabile per data ed esito, esportazione CSV.
 - **Staff**: invito di nuovi account staff, disattivazione (es. telefono perso).
+- **QR Locandina** (`/admin/qr-locandina`): QR statico verso `/iscriviti` (usa `window.location.origin`, punta sempre al dominio giusto), in stile locandina col brand, da scaricare in PNG o stampare per appendere in palestra.
 - **Impostazioni**: tabella `settings`.
 
 ## Privacy e sicurezza
@@ -160,24 +161,28 @@ Route `/admin`, ruolo `admin`.
 
 ## Fasi
 
-Ogni fase si chiude solo quando i criteri di accettazione sono soddisfatti.
+Ogni fase si chiude solo quando i criteri di accettazione sono soddisfatti. **Tutte e 7 completate** (un commit git per fase).
 
-1. **Setup e DB**: progetto Angular + PWA, Supabase collegato, migrazioni di tutte le tabelle con RLS, ruoli, seed con 2–3 piani di esempio.
+1. ✅ **Setup e DB**: progetto Angular + PWA, Supabase collegato, migrazioni di tutte le tabelle con RLS, ruoli, seed con 2–3 piani di esempio.
    *Accettazione*: login funzionante; un `member` non può leggere i dati di un altro.
-2. **Iscrizione e pagamento**: step 1–3 e 6 del flusso, Stripe in modalità test, webhook.
+2. ✅ **Iscrizione e pagamento**: step 1–3 e 6 del flusso, Stripe in modalità test, webhook.
    *Accettazione*: pagamento test → abbonamento `active` con date corrette; webhook ripetuto non crea duplicati.
-3. **Contratto e certificato**: upload certificato, OTP email, generazione PDF con hash.
+3. ✅ **Contratto e certificato**: upload certificato, OTP email, generazione PDF con hash.
    *Accettazione*: PDF scaricabile dall'admin, hash salvato, OTP errato 5 volte blocca.
-4. **Tessera QR**: `issue-access-token` e `/tessera` con rigenerazione ogni 30 secondi.
+4. ✅ **Tessera QR**: `issue-access-token` e `/tessera` con rigenerazione ogni 30 secondi.
    *Accettazione*: token scaduto dopo 45 secondi; niente QR se l'abbonamento non è attivo.
-5. **Check-in staff**: scanner, `verify-checkin`, schermate verde/rossa, check-in manuale.
-   *Accettazione*: screenshot di un QR vecchio → rosso; stesso QR scansionato due volte → rosso; abbonamento scaduto → rosso con motivo; funziona su iPhone (Safari) e Android (Chrome).
-6. **Pannello admin**: tutte le sezioni sopra.
-7. **Rifinitura**: design con i colori del brand, icone PWA, pagina `/iscriviti` ottimizzata per chi arriva dalla locandina, deploy su Netlify.
+5. ✅ **Check-in staff**: scanner, `verify-checkin`, schermate verde/rossa, check-in manuale.
+   *Accettazione*: screenshot di un QR vecchio → rosso; stesso QR scansionato due volte → rosso; abbonamento scaduto → rosso con motivo; funziona su iPhone (Safari) e Android (Chrome). *(scanner verificato via build/codice; il test fisico su iPhone/Android richiede un deploy HTTPS reale, non ancora fatto)*.
+6. ✅ **Pannello admin**: tutte le sezioni sopra.
+7. ✅ **Rifinitura**: design con i colori del brand, icone PWA, pagina `/iscriviti` ottimizzata per chi arriva dalla locandina, deploy su Netlify. *(configurazione di deploy pronta in `netlify.toml`; il deploy reale richiede un account Netlify e un progetto Supabase, non ancora collegati)*.
 
-## Modalità demo (fuori dalle fasi, su richiesta)
+## Aggiornamenti dopo la Fase 7 (su richiesta del proprietario)
 
-Aggiunta dopo la Fase 7 per poter testare il giro completo in locale e mostrarlo al cliente prima di avere un Supabase/Stripe reali. `environment.demo.ts` (`mock: true`, attivato con `npm run start:demo`) fa sì che `AuthService`, `PlansService` e ogni componente che normalmente chiama Supabase/Edge Function deleghino invece a `core/mock/mock-backend.service.ts`, un backend finto in memoria + `localStorage`. Riusa la stessa logica di business pura già testata nelle Edge Function (copiata in `core/mock/logic/`, va tenuta allineata a mano se le regole cambiano). Vedi il README per le credenziali demo. `environment.mock` è sempre `false` fuori da questa configurazione.
+Il sistema è in produzione concettualmente completo, ma non ancora collegato a un Supabase/Stripe reali (vedi "Da ricevere dal proprietario"). Nel frattempo sono state aggiunte due cose:
+
+- **Modalità demo** (`environment.demo.ts`, `mock: true`, `npm run start:demo`): per testare il giro completo in locale e mostrarlo al cliente senza credenziali reali. `AuthService`, `PlansService` e ogni componente che normalmente chiama Supabase/Edge Function deleghino invece a `core/mock/mock-backend.service.ts`, un backend finto in memoria + `localStorage`. Riusa la stessa logica di business pura già testata nelle Edge Function (copiata in `core/mock/logic/`, va tenuta allineata a mano se le regole cambiano). Vedi il README per le credenziali demo. `environment.mock` è sempre `false` fuori da questa configurazione.
+- **QR statico per la locandina** (`/admin/qr-locandina`, vedi "Pannello admin"): il proprietario vuole poter stampare un QR fisso da appendere in palestra, oltre al QR dinamico della tessera.
+- **Certificato medico reso facoltativo** con tolleranza di `certificate_grace_days` giorni (vedi "Flusso di iscrizione" e "Tessera con QR dinamico"): decisione del proprietario per non bloccare l'iscrizione di chi non ha ancora il certificato pronto.
 
 ## Da ricevere dal proprietario (placeholder finché mancano)
 
@@ -186,10 +191,10 @@ Aggiunta dopo la Fase 7 per poter testare il giro completo in locale e mostrarlo
   - Palestra Open: Mensile €70, Trimestrale €190, Semestrale €350
   - Personal Training Privato: Lezione singola €30, Pacchetto 10 lezioni €250
   - Personal Training Small Group (3–5 persone): Mensile €170, Trimestrale €470, Semestrale €870
-  - Iscrizione + assicurazione annuale: €30 (una tantum, gestita come piano a parte o costo fisso in fase di checkout — da definire in Fase 2)
-  - Nota: "Pacchetto 10 lezioni" non è una durata a giorni ma un pacchetto a consumo — richiede un campo aggiuntivo sul piano (es. `session_count`, nullable) oltre a `duration_days`, da aggiungere nella migrazione Fase 1.
-- Testo di contratto, regolamento e informativa privacy (revisionati da un consulente) — mancante, placeholder in Fase 3.
-- Regole sul certificato medico — mancante.
-- Chiavi Stripe (account intestato alla palestra) — mancante, necessarie per Fase 2.
-- Numero WhatsApp assistenza — mancante.
-- Eventuale Excel degli iscritti attuali da importare — mancante.
+  - Iscrizione + assicurazione annuale: €30 (una tantum) → **risolto in Fase 2**: `settings.registration_fee_cents`, addebitata automaticamente solo al primo acquisto di ogni member, come line item separato nella sessione Stripe.
+  - Nota: "Pacchetto 10 lezioni" non è una durata a giorni ma un pacchetto a consumo — risolto con `session_count` (nullable) su `plans`, oltre a `duration_days`.
+- Testo di contratto, regolamento e informativa privacy (revisionati da un consulente) — ancora mancante, placeholder in uso (`template_version: 'v1-placeholder'`).
+- Regole sul certificato medico → **parzialmente risolto**: facoltativo con tolleranza di `certificate_grace_days` giorni (vedi "Aggiornamenti dopo la Fase 7"). Restano da avere eventuali requisiti specifici sul tipo di certificato richiesto (agonistico/non agonistico), non ancora forniti.
+- Chiavi Stripe (account intestato alla palestra) — ancora mancante, necessaria per collegare i pagamenti reali.
+- Numero WhatsApp assistenza — ancora mancante.
+- Eventuale Excel degli iscritti attuali da importare — ancora mancante.
