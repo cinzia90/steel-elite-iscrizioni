@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
 import { SignupStateService } from '../signup-state.service';
+import { AuthService } from '../../../core/auth/auth.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 interface OtpVerifyResponse {
@@ -23,6 +26,7 @@ interface OtpVerifyResponse {
 })
 export class ContractComponent {
   readonly t = it.signup.contract;
+  readonly isMock = environment.mock;
 
   acceptedTerms = false;
   acceptedRules = false;
@@ -33,10 +37,13 @@ export class ContractComponent {
   readonly sendingOtp = signal(false);
   readonly verifyingOtp = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  readonly demoCode = signal<string | null>(null);
 
   constructor(
     private readonly supabase: SupabaseService,
     private readonly signupState: SignupStateService,
+    private readonly auth: AuthService,
+    private readonly mock: MockBackendService,
     private readonly router: Router,
   ) {}
 
@@ -52,6 +59,17 @@ export class ContractComponent {
 
     this.errorMessage.set(null);
     this.sendingOtp.set(true);
+
+    if (environment.mock) {
+      const userId = this.auth.user()?.id;
+      if (userId) {
+        const { plainCode } = await this.mock.requestOtp(userId);
+        this.demoCode.set(plainCode);
+      }
+      this.sendingOtp.set(false);
+      this.otpSent.set(true);
+      return;
+    }
 
     const { error } = await this.supabase.client.functions.invoke('contract-otp', {
       body: { action: 'request' },
@@ -71,11 +89,19 @@ export class ContractComponent {
     this.errorMessage.set(null);
     this.verifyingOtp.set(true);
 
-    const { data, error } = await this.supabase.client.functions.invoke<OtpVerifyResponse>('contract-otp', {
-      body: { action: 'verify', code: this.otpCode },
-    });
+    const userId = this.auth.user()?.id;
 
-    if (error || !data) {
+    const data: OtpVerifyResponse | null = environment.mock
+      ? userId
+        ? await this.mock.verifyOtp(userId, this.otpCode)
+        : null
+      : (
+          await this.supabase.client.functions.invoke<OtpVerifyResponse>('contract-otp', {
+            body: { action: 'verify', code: this.otpCode },
+          })
+        ).data;
+
+    if (!data) {
       this.verifyingOtp.set(false);
       this.errorMessage.set(this.t.errorGeneric);
       return;
@@ -95,23 +121,29 @@ export class ContractComponent {
       return;
     }
 
-    const planId = this.signupState.selectedPlanId();
-    const { error: contractError } = await this.supabase.client.functions.invoke('generate-contract', {
-      body: {
-        planId,
-        acceptedTerms: this.acceptedTerms,
-        acceptedRules: this.acceptedRules,
-        acceptedPrivacy: this.acceptedPrivacy,
-      },
-    });
+    if (environment.mock) {
+      if (userId) {
+        await this.mock.generateContract(userId);
+      }
+    } else {
+      const planId = this.signupState.selectedPlanId();
+      const { error: contractError } = await this.supabase.client.functions.invoke('generate-contract', {
+        body: {
+          planId,
+          acceptedTerms: this.acceptedTerms,
+          acceptedRules: this.acceptedRules,
+          acceptedPrivacy: this.acceptedPrivacy,
+        },
+      });
 
-    this.verifyingOtp.set(false);
-
-    if (contractError) {
-      this.errorMessage.set(this.t.errorGeneric);
-      return;
+      if (contractError) {
+        this.verifyingOtp.set(false);
+        this.errorMessage.set(this.t.errorGeneric);
+        return;
+      }
     }
 
+    this.verifyingOtp.set(false);
     this.router.navigateByUrl('/iscriviti/pagamento');
   }
 }

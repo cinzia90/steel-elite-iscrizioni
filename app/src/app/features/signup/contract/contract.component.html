@@ -28,6 +28,10 @@
     } @else {
       <p class="otp-sent">{{ t.otpSentLabel }}</p>
 
+      @if (isMock && demoCode()) {
+        <p class="demo-code">Modalità demo — codice: <strong>{{ demoCode() }}</strong></p>
+      }
+
       <label>
         {{ t.otpCode }}
         <input type="text" inputmode="numeric" maxlength="6" name="otpCode" [(ngModel)]="otpCode" />

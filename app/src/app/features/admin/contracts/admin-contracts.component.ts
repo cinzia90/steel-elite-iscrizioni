@@ -1,6 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 interface ContractRow {
@@ -27,9 +29,23 @@ export class AdminContractsComponent implements OnInit {
   readonly loading = signal(true);
   readonly errorMessage = signal<string | null>(null);
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly supabase: SupabaseService, private readonly mock: MockBackendService) {}
 
   async ngOnInit(): Promise<void> {
+    if (environment.mock) {
+      this.contracts.set(
+        this.mock.listContracts().map((c) => ({
+          id: c.id,
+          created_at: c.created_at,
+          pdf_path: c.pdf_path,
+          pdf_sha256: c.pdf_sha256,
+          profiles: this.mock.getProfile(c.member_id),
+        })),
+      );
+      this.loading.set(false);
+      return;
+    }
+
     const { data } = await this.supabase.client
       .from('contracts')
       .select('id, created_at, pdf_path, pdf_sha256, profiles ( first_name, last_name )')
@@ -47,6 +63,17 @@ export class AdminContractsComponent implements OnInit {
 
   async download(contract: ContractRow): Promise<void> {
     this.errorMessage.set(null);
+
+    if (environment.mock) {
+      const url = await this.mock.getSignedUrl(contract.pdf_path);
+      if (!url) {
+        this.errorMessage.set(this.t.errorGeneric);
+        return;
+      }
+      window.open(url, '_blank');
+      return;
+    }
+
     const { data, error } = await this.supabase.client.storage
       .from('contracts')
       .createSignedUrl(contract.pdf_path, 60);

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../core/auth/auth.service';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 interface PendingCertificate {
@@ -26,7 +28,11 @@ export class AdminCertificatesComponent implements OnInit {
   readonly errorMessage = signal<string | null>(null);
   readonly notes = new Map<string, string>();
 
-  constructor(private readonly supabase: SupabaseService, private readonly auth: AuthService) {}
+  constructor(
+    private readonly supabase: SupabaseService,
+    private readonly auth: AuthService,
+    private readonly mock: MockBackendService,
+  ) {}
 
   async ngOnInit(): Promise<void> {
     await this.load();
@@ -34,6 +40,21 @@ export class AdminCertificatesComponent implements OnInit {
 
   private async load(): Promise<void> {
     this.loading.set(true);
+
+    if (environment.mock) {
+      const pending = this.mock.listPendingCertificates();
+      this.certificates.set(
+        pending.map((c) => ({
+          id: c.id,
+          file_path: c.file_path,
+          expiry_date: c.expiry_date,
+          profiles: this.mock.getProfile(c.member_id),
+        })) as unknown as PendingCertificate[],
+      );
+      this.loading.set(false);
+      return;
+    }
+
     const { data } = await this.supabase.client
       .from('medical_certificates')
       .select('id, file_path, expiry_date, profiles ( first_name, last_name )')
@@ -58,15 +79,24 @@ export class AdminCertificatesComponent implements OnInit {
   }
 
   async view(cert: PendingCertificate): Promise<void> {
-    const { data } = await this.supabase.client.storage.from('certificates').createSignedUrl(cert.file_path, 60);
-    if (data?.signedUrl) {
-      window.open(data.signedUrl, '_blank');
+    const url = environment.mock
+      ? await this.mock.getSignedUrl(cert.file_path)
+      : (await this.supabase.client.storage.from('certificates').createSignedUrl(cert.file_path, 60)).data
+          ?.signedUrl;
+    if (url) {
+      window.open(url, '_blank');
     }
   }
 
   async decide(cert: PendingCertificate, status: 'approved' | 'rejected'): Promise<void> {
     this.errorMessage.set(null);
     const userId = this.auth.user()?.id;
+
+    if (environment.mock) {
+      this.mock.decideCertificate(cert.id, status, this.notes.get(cert.id) ?? null, userId ?? '');
+      await this.load();
+      return;
+    }
 
     const { error } = await this.supabase.client
       .from('medical_certificates')

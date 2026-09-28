@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 @Component({
@@ -25,6 +27,7 @@ export class CertificateComponent {
   constructor(
     private readonly auth: AuthService,
     private readonly supabase: SupabaseService,
+    private readonly mock: MockBackendService,
     private readonly router: Router,
   ) {}
 
@@ -49,25 +52,29 @@ export class CertificateComponent {
     this.loading.set(true);
 
     try {
-      const extension = this.certificateFile.name.split('.').pop() ?? 'pdf';
-      const filePath = `${userId}/certificato-${Date.now()}.${extension}`;
+      if (environment.mock) {
+        await this.mock.submitCertificate(userId, this.certificateFile, this.expiryDate);
+      } else {
+        const extension = this.certificateFile.name.split('.').pop() ?? 'pdf';
+        const filePath = `${userId}/certificato-${Date.now()}.${extension}`;
 
-      const { error: uploadError } = await this.supabase.client.storage
-        .from('certificates')
-        .upload(filePath, this.certificateFile, { upsert: false });
+        const { error: uploadError } = await this.supabase.client.storage
+          .from('certificates')
+          .upload(filePath, this.certificateFile, { upsert: false });
 
-      if (uploadError) {
-        throw uploadError;
-      }
+        if (uploadError) {
+          throw uploadError;
+        }
 
-      const { error: insertError } = await this.supabase.client.from('medical_certificates').insert({
-        member_id: userId,
-        file_path: filePath,
-        expiry_date: this.expiryDate,
-      });
+        const { error: insertError } = await this.supabase.client.from('medical_certificates').insert({
+          member_id: userId,
+          file_path: filePath,
+          expiry_date: this.expiryDate,
+        });
 
-      if (insertError) {
-        throw insertError;
+        if (insertError) {
+          throw insertError;
+        }
       }
 
       this.router.navigateByUrl('/iscriviti/contratto');

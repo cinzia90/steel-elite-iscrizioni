@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:demo": "ng serve --configuration demo",
     "build": "ng build",
     "build:netlify": "node scripts/set-env.js && ng build --configuration production",
     "watch": "ng build --watch --configuration development",

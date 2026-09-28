@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth/auth.service';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 @Component({
@@ -31,6 +33,7 @@ export class ProfileComponent {
   constructor(
     private readonly auth: AuthService,
     private readonly supabase: SupabaseService,
+    private readonly mock: MockBackendService,
     private readonly router: Router,
   ) {
     const profile = this.auth.profile();
@@ -69,30 +72,36 @@ export class ProfileComponent {
     try {
       const extension = this.photoFile.name.split('.').pop() ?? 'jpg';
       const photoPath = `${userId}/photo.${extension}`;
+      const profileUpdate = {
+        first_name: this.firstName,
+        last_name: this.lastName,
+        fiscal_code: this.fiscalCode,
+        birth_date: this.birthDate,
+        phone: this.phone,
+        address: this.address,
+        photo_path: photoPath,
+      };
 
-      const { error: uploadError } = await this.supabase.client.storage
-        .from('photos')
-        .upload(photoPath, this.photoFile, { upsert: true });
+      if (environment.mock) {
+        await this.mock.uploadFile(photoPath, this.photoFile);
+        await this.mock.updateProfile(userId, profileUpdate);
+      } else {
+        const { error: uploadError } = await this.supabase.client.storage
+          .from('photos')
+          .upload(photoPath, this.photoFile, { upsert: true });
 
-      if (uploadError) {
-        throw uploadError;
-      }
+        if (uploadError) {
+          throw uploadError;
+        }
 
-      const { error: updateError } = await this.supabase.client
-        .from('profiles')
-        .update({
-          first_name: this.firstName,
-          last_name: this.lastName,
-          fiscal_code: this.fiscalCode,
-          birth_date: this.birthDate,
-          phone: this.phone,
-          address: this.address,
-          photo_path: photoPath,
-        })
-        .eq('id', userId);
+        const { error: updateError } = await this.supabase.client
+          .from('profiles')
+          .update(profileUpdate)
+          .eq('id', userId);
 
-      if (updateError) {
-        throw updateError;
+        if (updateError) {
+          throw updateError;
+        }
       }
 
       this.router.navigateByUrl('/iscriviti/certificato');

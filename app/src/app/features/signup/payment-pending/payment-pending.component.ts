@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
 import { SignupStateService } from '../signup-state.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 type PaymentPendingStatus = 'cancelled' | 'pending' | 'active';
@@ -28,6 +30,7 @@ export class PaymentPendingComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly supabase: SupabaseService,
     private readonly signupState: SignupStateService,
+    private readonly mock: MockBackendService,
   ) {}
 
   ngOnInit(): void {
@@ -61,13 +64,17 @@ export class PaymentPendingComponent implements OnInit, OnDestroy {
     const deadline = Date.now() + POLL_TIMEOUT_MS;
 
     const check = async () => {
-      const { data } = await this.supabase.client
-        .from('subscriptions')
-        .select('status')
-        .eq('stripe_checkout_session_id', sessionId)
-        .single();
+      const status = environment.mock
+        ? this.mock.getSubscriptionStatusBySessionId(sessionId)?.status
+        : (
+            await this.supabase.client
+              .from('subscriptions')
+              .select('status')
+              .eq('stripe_checkout_session_id', sessionId)
+              .single()
+          ).data?.status;
 
-      if (data?.status === 'active') {
+      if (status === 'active') {
         this.status.set('active');
         this.signupState.clear();
         if (this.pollHandle) {

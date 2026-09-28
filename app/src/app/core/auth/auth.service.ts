@@ -2,6 +2,8 @@ import { Injectable, computed, signal } from '@angular/core';
 import type { Session, User } from '@supabase/supabase-js';
 import { SupabaseService } from '../services/supabase.service';
 import { Profile } from '../../shared/models/profile.model';
+import { MockBackendService } from '../mock/mock-backend.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -10,13 +12,33 @@ export class AuthService {
   private readonly readySignal = signal(false);
 
   readonly session = this.sessionSignal.asReadonly();
-  readonly profile = this.profileSignal.asReadonly();
   readonly ready = this.readySignal.asReadonly();
-  readonly user = computed<User | null>(() => this.sessionSignal()?.user ?? null);
-  readonly role = computed(() => this.profileSignal()?.role ?? null);
-  readonly isAuthenticated = computed(() => this.sessionSignal() !== null);
 
-  constructor(private readonly supabase: SupabaseService) {
+  readonly user = computed<User | null>(() => {
+    if (environment.mock) {
+      const mockUser = this.mock.sessionUser();
+      return mockUser ? ({ id: mockUser.id, email: mockUser.email } as User) : null;
+    }
+    return this.sessionSignal()?.user ?? null;
+  });
+
+  readonly profile = computed<Profile | null>(() => {
+    if (environment.mock) {
+      const mockUser = this.mock.sessionUser();
+      return mockUser ? this.mock.getProfile(mockUser.id) : null;
+    }
+    return this.profileSignal();
+  });
+
+  readonly role = computed(() => this.profile()?.role ?? null);
+  readonly isAuthenticated = computed(() => this.user() !== null);
+
+  constructor(private readonly supabase: SupabaseService, private readonly mock: MockBackendService) {
+    if (environment.mock) {
+      this.readySignal.set(true);
+      return;
+    }
+
     this.supabase.client.auth.getSession().then(({ data }) => {
       this.sessionSignal.set(data.session);
       this.loadProfile(data.session?.user.id ?? null).finally(() => this.readySignal.set(true));
@@ -42,10 +64,17 @@ export class AuthService {
   }
 
   async signInWithPassword(email: string, password: string) {
+    if (environment.mock) {
+      return this.mock.signInWithPassword(email, password);
+    }
     return this.supabase.client.auth.signInWithPassword({ email, password });
   }
 
   async signUp(email: string, password: string, firstName: string, lastName: string) {
+    if (environment.mock) {
+      const result = await this.mock.signUp(email, password, firstName, lastName);
+      return { data: { session: result.session, user: null }, error: result.error };
+    }
     return this.supabase.client.auth.signUp({
       email,
       password,
@@ -54,6 +83,9 @@ export class AuthService {
   }
 
   async signOut() {
+    if (environment.mock) {
+      return this.mock.signOut();
+    }
     return this.supabase.client.auth.signOut();
   }
 }

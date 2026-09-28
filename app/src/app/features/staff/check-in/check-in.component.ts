@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserQRCodeReader, IScannerControls } from '@zxing/browser';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { AuthService } from '../../../core/auth/auth.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 interface CheckinResponse {
@@ -50,7 +53,11 @@ export class CheckInComponent implements OnDestroy {
   private processing = false;
   private resultTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(
+    private readonly supabase: SupabaseService,
+    private readonly auth: AuthService,
+    private readonly mock: MockBackendService,
+  ) {}
 
   ngOnDestroy(): void {
     this.stopScanning();
@@ -112,11 +119,16 @@ export class CheckInComponent implements OnDestroy {
   private async handleScan(token: string): Promise<void> {
     this.processing = true;
 
-    const { data, error } = await this.supabase.client.functions.invoke<CheckinResponse>('verify-checkin', {
-      body: { mode: 'qr', token },
-    });
+    const staffId = this.auth.user()?.id ?? '';
+    const data: CheckinResponse | null = environment.mock
+      ? await this.mock.verifyCheckinQr(staffId, token)
+      : (
+          await this.supabase.client.functions.invoke<CheckinResponse>('verify-checkin', {
+            body: { mode: 'qr', token },
+          })
+        ).data;
 
-    if (error || !data) {
+    if (!data) {
       this.errorMessage.set(this.t.errorGeneric);
       this.processing = false;
       return;
@@ -178,6 +190,11 @@ export class CheckInComponent implements OnDestroy {
       return;
     }
 
+    if (environment.mock) {
+      this.manualResults.set(this.mock.searchMembers(this.manualQuery) as unknown as MemberSearchResult[]);
+      return;
+    }
+
     const { data } = await this.supabase.client
       .from('profiles')
       .select('id, first_name, last_name')
@@ -189,11 +206,16 @@ export class CheckInComponent implements OnDestroy {
   }
 
   async confirmManual(member: MemberSearchResult): Promise<void> {
-    const { data, error } = await this.supabase.client.functions.invoke<CheckinResponse>('verify-checkin', {
-      body: { mode: 'manual', memberId: member.id },
-    });
+    const staffId = this.auth.user()?.id ?? '';
+    const data: CheckinResponse | null = environment.mock
+      ? await this.mock.verifyCheckinManual(staffId, member.id)
+      : (
+          await this.supabase.client.functions.invoke<CheckinResponse>('verify-checkin', {
+            body: { mode: 'manual', memberId: member.id },
+          })
+        ).data;
 
-    if (error || !data) {
+    if (!data) {
       this.errorMessage.set(this.t.errorGeneric);
       return;
     }

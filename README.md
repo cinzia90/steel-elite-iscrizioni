@@ -25,6 +25,27 @@ npm start
 
 Inserisci le chiavi reali (URL e anon key del progetto Supabase) in `app/src/environments/environment.ts` per collegare l'app al backend durante lo sviluppo. Non committare mai chiavi reali: quel file resta con valori segnaposto nel repository.
 
+## Modalità demo (senza Supabase/Stripe reali)
+
+Per provare l'intero giro dell'app in locale, o mostrarlo a un cliente, senza nessuna credenziale reale:
+
+```bash
+cd app
+npm install
+npm run start:demo
+```
+
+`environment.demo.ts` (`mock: true`) attiva un backend finto interamente in memoria + `localStorage` (`core/mock/mock-backend.service.ts`), che riproduce lo stesso comportamento delle Edge Function reali — inclusa la stessa logica di business già testata (calcolo scadenze, verifica OTP, regole di check-in). Iscrizione, pagamento (istantaneo, nessun vero Stripe), tessera QR e check-in funzionano end-to-end.
+
+Due account sono pre-creati per accedere subito senza passare dall'iscrizione:
+
+- **Admin**: `admin@demo.steelelite.it` / `demo1234`
+- **Staff**: `staff@demo.steelelite.it` / `demo1234`
+
+Un banner in cima alla pagina ricorda che si è in modalità demo e permette di azzerare i dati (pulsante "Reset dati demo"). Il codice OTP dell'iscrizione viene mostrato direttamente a schermo (non c'è un vero invio email).
+
+`environment.mock` è sempre `false` in sviluppo normale (`environment.ts`) e in produzione (`environment.prod.ts`/Netlify): la modalità demo va attivata esplicitamente con `npm run start:demo` o `ng build --configuration demo`, non può attivarsi per errore.
+
 ## Deploy su Netlify
 
 Il repository include `netlify.toml`, già configurato con `base = app`, comando di build `npm run build:netlify` e pubblicazione di `dist/app/browser`.

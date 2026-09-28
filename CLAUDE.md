@@ -174,6 +174,10 @@ Ogni fase si chiude solo quando i criteri di accettazione sono soddisfatti.
 6. **Pannello admin**: tutte le sezioni sopra.
 7. **Rifinitura**: design con i colori del brand, icone PWA, pagina `/iscriviti` ottimizzata per chi arriva dalla locandina, deploy su Netlify.
 
+## Modalità demo (fuori dalle fasi, su richiesta)
+
+Aggiunta dopo la Fase 7 per poter testare il giro completo in locale e mostrarlo al cliente prima di avere un Supabase/Stripe reali. `environment.demo.ts` (`mock: true`, attivato con `npm run start:demo`) fa sì che `AuthService`, `PlansService` e ogni componente che normalmente chiama Supabase/Edge Function deleghino invece a `core/mock/mock-backend.service.ts`, un backend finto in memoria + `localStorage`. Riusa la stessa logica di business pura già testata nelle Edge Function (copiata in `core/mock/logic/`, va tenuta allineata a mano se le regole cambiano). Vedi il README per le credenziali demo. `environment.mock` è sempre `false` fuori da questa configurazione.
+
 ## Da ricevere dal proprietario (placeholder finché mancano)
 
 - ~~Nome palestra, logo, colori~~ → **noti**: Steel Elite, Racale (LE), Via Udine 10. Logo in `assets/logo.jpg` (da copiare da `palestra-steel-elite/img/logo.jpg`). Palette: oro `#C9A227`/`#F4D374`, argento `#F2F2F2`/`#A8A8A8`, nero `#050505`, font Bricolage Grotesque + Inter (vedi progetto `palestra-steel-elite` per il sistema visivo completo).

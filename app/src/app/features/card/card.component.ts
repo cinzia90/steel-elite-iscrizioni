@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import * as QRCode from 'qrcode';
 import { AuthService } from '../../core/auth/auth.service';
 import { SupabaseService } from '../../core/services/supabase.service';
+import { MockBackendService } from '../../core/mock/mock-backend.service';
+import { environment } from '../../../environments/environment';
 import { it } from '../../core/i18n/it';
 
 type StatusReason =
@@ -50,7 +52,11 @@ export class CardComponent implements OnInit, OnDestroy {
     this.qrDataUrl.set(null);
   };
 
-  constructor(private readonly auth: AuthService, private readonly supabase: SupabaseService) {}
+  constructor(
+    private readonly auth: AuthService,
+    private readonly supabase: SupabaseService,
+    private readonly mock: MockBackendService,
+  ) {}
 
   async ngOnInit(): Promise<void> {
     window.addEventListener('online', this.onlineListener);
@@ -73,6 +79,52 @@ export class CardComponent implements OnInit, OnDestroy {
   private async loadStatus(): Promise<void> {
     const userId = this.auth.user()?.id;
     if (!userId) {
+      return;
+    }
+
+    if (environment.mock) {
+      const profile = this.auth.profile();
+      if (profile?.photo_path) {
+        this.photoUrl.set(await this.mock.getSignedUrl(profile.photo_path));
+      }
+
+      const subscription = this.mock.getLatestSubscription(userId);
+      if (!subscription) {
+        this.statusReason.set('no_subscription');
+        return;
+      }
+
+      const plan = this.mock.listAllPlans().find((p) => p.id === subscription.plan_id);
+      this.planName.set(plan?.name ?? null);
+      this.endDateLabel.set(subscription.end_date);
+
+      const isDateExpired = subscription.end_date
+        ? new Date(`${subscription.end_date}T23:59:59Z`) < new Date()
+        : false;
+      const isSessionsDepleted = subscription.sessions_remaining !== null && subscription.sessions_remaining <= 0;
+
+      if (subscription.status === 'pending') {
+        this.statusReason.set('pending_payment');
+        return;
+      }
+      if (subscription.status !== 'active' || isDateExpired || isSessionsDepleted) {
+        this.statusReason.set('expired');
+        return;
+      }
+
+      const settings = this.mock.getSettings();
+      const certificate = this.mock.getLatestCertificate(userId);
+
+      if (!certificate) {
+        this.statusReason.set('certificate_missing');
+        return;
+      }
+      if (settings.require_approved_certificate && certificate.status !== 'approved') {
+        this.statusReason.set('certificate_pending');
+        return;
+      }
+
+      this.statusReason.set('active');
       return;
     }
 
@@ -167,6 +219,13 @@ export class CardComponent implements OnInit, OnDestroy {
   }
 
   private async refreshToken(): Promise<void> {
+    if (environment.mock) {
+      const userId = this.auth.user()?.id;
+      const token = userId ? this.mock.issueAccessToken(userId) : null;
+      this.qrDataUrl.set(token ? await QRCode.toDataURL(token, { margin: 1, width: 280 }) : null);
+      return;
+    }
+
     const { data, error } = await this.supabase.client.functions.invoke<{ token: string }>(
       'issue-access-token',
       { body: {} },

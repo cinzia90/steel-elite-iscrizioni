@@ -2,6 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 import { Plan, PlanCategory } from '../../../shared/models/plan.model';
 
@@ -48,7 +50,7 @@ export class AdminPlansComponent implements OnInit {
   readonly editing = signal(false);
   form: PlanFormValue = emptyForm();
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly supabase: SupabaseService, private readonly mock: MockBackendService) {}
 
   async ngOnInit(): Promise<void> {
     await this.load();
@@ -56,6 +58,13 @@ export class AdminPlansComponent implements OnInit {
 
   private async load(): Promise<void> {
     this.loading.set(true);
+
+    if (environment.mock) {
+      this.plans.set(this.mock.listAllPlans());
+      this.loading.set(false);
+      return;
+    }
+
     const { data } = await this.supabase.client.from('plans').select('*').order('sort_order', { ascending: true });
     this.plans.set((data as Plan[]) ?? []);
     this.loading.set(false);
@@ -101,6 +110,13 @@ export class AdminPlansComponent implements OnInit {
       active: this.form.active,
     };
 
+    if (environment.mock) {
+      this.mock.savePlan(this.form.id, payload);
+      this.editing.set(false);
+      await this.load();
+      return;
+    }
+
     const { error } = this.form.id
       ? await this.supabase.client.from('plans').update(payload).eq('id', this.form.id)
       : await this.supabase.client.from('plans').insert(payload);
@@ -115,6 +131,12 @@ export class AdminPlansComponent implements OnInit {
   }
 
   async toggleActive(plan: Plan): Promise<void> {
+    if (environment.mock) {
+      this.mock.togglePlanActive(plan.id);
+      await this.load();
+      return;
+    }
+
     const { error } = await this.supabase.client.from('plans').update({ active: !plan.active }).eq('id', plan.id);
     if (error) {
       this.errorMessage.set(this.t.errorGeneric);

@@ -10,6 +10,7 @@ const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || 'placeholder-anon-key';
 const content = `// File generato in build da scripts/set-env.js — non modificare a mano.
 export const environment = {
   production: true,
+  mock: false,
   supabaseUrl: '${supabaseUrl}',
   supabaseAnonKey: '${supabaseAnonKey}',
 };

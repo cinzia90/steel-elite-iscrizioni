@@ -2,6 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 interface AccessLogRow {
@@ -10,6 +12,7 @@ interface AccessLogRow {
   result: string;
   reason: string | null;
   profiles: { first_name: string | null; last_name: string | null } | null;
+  memberName?: string;
 }
 
 @Component({
@@ -28,7 +31,7 @@ export class AdminAccessLogsComponent implements OnInit {
   dateTo = '';
   result: '' | 'granted' | 'denied' = '';
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly supabase: SupabaseService, private readonly mock: MockBackendService) {}
 
   async ngOnInit(): Promise<void> {
     await this.search();
@@ -36,6 +39,14 @@ export class AdminAccessLogsComponent implements OnInit {
 
   async search(): Promise<void> {
     this.loading.set(true);
+
+    if (environment.mock) {
+      this.logs.set(
+        this.mock.listAccessLogs({ dateFrom: this.dateFrom, dateTo: this.dateTo, result: this.result }) as unknown as AccessLogRow[],
+      );
+      this.loading.set(false);
+      return;
+    }
 
     let request = this.supabase.client
       .from('access_logs')
@@ -59,6 +70,9 @@ export class AdminAccessLogsComponent implements OnInit {
   }
 
   memberName(log: AccessLogRow): string {
+    if (log.memberName) {
+      return log.memberName;
+    }
     const profile = log.profiles;
     return profile ? `${profile.first_name ?? ''} ${profile.last_name ?? ''}`.trim() : '—';
   }

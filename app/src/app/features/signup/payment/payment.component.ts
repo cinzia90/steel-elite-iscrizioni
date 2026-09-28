@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
 import { SignupStateService } from '../signup-state.service';
+import { AuthService } from '../../../core/auth/auth.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 @Component({
@@ -23,6 +26,8 @@ export class PaymentComponent implements OnInit {
   constructor(
     private readonly supabase: SupabaseService,
     private readonly signupState: SignupStateService,
+    private readonly auth: AuthService,
+    private readonly mock: MockBackendService,
     private readonly router: Router,
   ) {}
 
@@ -30,6 +35,17 @@ export class PaymentComponent implements OnInit {
     const planId = this.signupState.selectedPlanId();
     if (!planId) {
       this.router.navigateByUrl('/iscriviti');
+      return;
+    }
+
+    if (environment.mock) {
+      const userId = this.auth.user()?.id;
+      if (!userId) {
+        this.errorMessage.set(this.t.errorGeneric);
+        return;
+      }
+      const { sessionId } = await this.mock.startCheckout(userId, planId);
+      this.router.navigateByUrl(`/iscriviti/conferma?session_id=${sessionId}`);
       return;
     }
 

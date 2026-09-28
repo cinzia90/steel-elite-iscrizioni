@@ -1,6 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 const CERTIFICATE_EXPIRY_WINDOW_DAYS = 30;
@@ -22,9 +24,20 @@ export class AdminDashboardComponent implements OnInit {
   readonly certificatesExpiringCount = signal(0);
   readonly certificatesPendingCount = signal(0);
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly supabase: SupabaseService, private readonly mock: MockBackendService) {}
 
   async ngOnInit(): Promise<void> {
+    if (environment.mock) {
+      const stats = this.mock.dashboardStats();
+      this.todayAccessCount.set(stats.todayAccessCount);
+      this.activeClientsCount.set(stats.activeClientsCount);
+      this.expiringSoonCount.set(stats.expiringSoonCount);
+      this.certificatesExpiringCount.set(stats.certificatesExpiringCount);
+      this.certificatesPendingCount.set(stats.certificatesPendingCount);
+      this.loading.set(false);
+      return;
+    }
+
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 

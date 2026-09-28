@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 
 interface ClientRow {
@@ -24,7 +26,7 @@ export class AdminClientsComponent implements OnInit {
   readonly loading = signal(true);
   query = '';
 
-  constructor(private readonly supabase: SupabaseService) {}
+  constructor(private readonly supabase: SupabaseService, private readonly mock: MockBackendService) {}
 
   async ngOnInit(): Promise<void> {
     await this.search();
@@ -32,6 +34,12 @@ export class AdminClientsComponent implements OnInit {
 
   async search(): Promise<void> {
     this.loading.set(true);
+
+    if (environment.mock) {
+      this.clients.set(this.mock.listClients(this.query) as unknown as ClientRow[]);
+      this.loading.set(false);
+      return;
+    }
 
     let request = this.supabase.client.from('profiles').select('id, first_name, last_name').eq('role', 'member');
 

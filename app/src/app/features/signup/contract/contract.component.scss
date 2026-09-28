@@ -63,6 +63,17 @@ input[type='text'] {
   }
 }
 
+.demo-code {
+  text-align: center;
+  color: var(--se-silver);
+  font-size: 13px;
+  background: rgba(201, 162, 39, 0.15);
+  border: 1px dashed var(--se-gold);
+  border-radius: var(--se-radius-sm);
+  padding: var(--se-space-2);
+  margin: 0;
+}
+
 .otp-sent {
   text-align: center;
   color: var(--se-gold-light);

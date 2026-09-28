@@ -2,6 +2,8 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { SupabaseService } from '../../../core/services/supabase.service';
+import { MockBackendService } from '../../../core/mock/mock-backend.service';
+import { environment } from '../../../../environments/environment';
 import { it } from '../../../core/i18n/it';
 import { Profile } from '../../../shared/models/profile.model';
 
@@ -54,11 +56,38 @@ export class AdminClientDetailComponent implements OnInit {
 
   private memberId = '';
 
-  constructor(private readonly route: ActivatedRoute, private readonly supabase: SupabaseService) {}
+  constructor(
+    private readonly route: ActivatedRoute,
+    private readonly supabase: SupabaseService,
+    private readonly mock: MockBackendService,
+  ) {}
 
   async ngOnInit(): Promise<void> {
     this.memberId = this.route.snapshot.paramMap.get('id') ?? '';
     if (!this.memberId) {
+      return;
+    }
+
+    if (environment.mock) {
+      const detail = this.mock.getClientDetail(this.memberId);
+      this.profile.set(detail.profile);
+      if (detail.profile?.photo_path) {
+        this.photoUrl.set(await this.mock.getSignedUrl(detail.profile.photo_path));
+      }
+      this.subscriptions.set(
+        detail.subscriptions.map((s) => ({
+          id: s.id,
+          status: s.status,
+          start_date: s.start_date,
+          end_date: s.end_date,
+          sessions_remaining: s.sessions_remaining,
+          plans: { name: s.planName },
+        })),
+      );
+      this.contracts.set(detail.contracts as unknown as ContractRow[]);
+      this.certificate.set(detail.certificate as unknown as CertificateRow | null);
+      this.accessLogs.set(detail.accessLogs as unknown as AccessLogRow[]);
+      this.loading.set(false);
       return;
     }
 
@@ -105,9 +134,12 @@ export class AdminClientDetailComponent implements OnInit {
   }
 
   async downloadContract(contract: ContractRow): Promise<void> {
-    const { data } = await this.supabase.client.storage.from('contracts').createSignedUrl(contract.pdf_path, 60);
-    if (data?.signedUrl) {
-      window.open(data.signedUrl, '_blank');
+    const url = environment.mock
+      ? await this.mock.getSignedUrl(contract.pdf_path)
+      : (await this.supabase.client.storage.from('contracts').createSignedUrl(contract.pdf_path, 60)).data
+          ?.signedUrl;
+    if (url) {
+      window.open(url, '_blank');
     }
   }
 
@@ -116,9 +148,12 @@ export class AdminClientDetailComponent implements OnInit {
     if (!cert) {
       return;
     }
-    const { data } = await this.supabase.client.storage.from('certificates').createSignedUrl(cert.file_path, 60);
-    if (data?.signedUrl) {
-      window.open(data.signedUrl, '_blank');
+    const url = environment.mock
+      ? await this.mock.getSignedUrl(cert.file_path)
+      : (await this.supabase.client.storage.from('certificates').createSignedUrl(cert.file_path, 60)).data
+          ?.signedUrl;
+    if (url) {
+      window.open(url, '_blank');
     }
   }
 
