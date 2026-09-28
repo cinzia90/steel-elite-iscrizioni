@@ -1,6 +1,6 @@
 import {
   it
-} from "./chunk-VDIJZGGP.js";
+} from "./chunk-THOMXI5H.js";
 import {
   ActivatedRoute,
   RouterLink
@@ -9,7 +9,7 @@ import {
   MockBackendService,
   SupabaseService,
   environment
-} from "./chunk-NZILXJS5.js";
+} from "./chunk-DLQI4DZU.js";
 import {
   CommonModule,
   Component,
@@ -550,4 +550,4 @@ var AdminClientDetailComponent = class _AdminClientDetailComponent {
 export {
   AdminClientDetailComponent
 };
-//# sourceMappingURL=chunk-7TGSP7TS.js.map
+//# sourceMappingURL=chunk-B5OUDPHN.js.map

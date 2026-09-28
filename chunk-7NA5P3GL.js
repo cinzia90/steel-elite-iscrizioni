@@ -6,7 +6,7 @@ import {
 } from "./chunk-XXIBBBHG.js";
 import {
   it
-} from "./chunk-VDIJZGGP.js";
+} from "./chunk-THOMXI5H.js";
 import {
   RouterLink
 } from "./chunk-NKGUCW2I.js";
@@ -14,7 +14,7 @@ import {
   MockBackendService,
   SupabaseService,
   environment
-} from "./chunk-NZILXJS5.js";
+} from "./chunk-DLQI4DZU.js";
 import {
   CommonModule,
   Component,
@@ -173,4 +173,4 @@ var AdminClientsComponent = class _AdminClientsComponent {
 export {
   AdminClientsComponent
 };
-//# sourceMappingURL=chunk-7CMPOPGV.js.map
+//# sourceMappingURL=chunk-7NA5P3GL.js.map

@@ -23876,20 +23876,24 @@ var MockBackendService = class _MockBackendService {
   }
   // ===== Check-in staff =====
   buildMemberSnapshot(memberId) {
-    const profile = this.state.profiles.find((p) => p.id === memberId);
-    const subscription = this.getLatestSubscription(memberId);
-    const plan = subscription ? this.state.plans.find((p) => p.id === subscription.plan_id) : null;
-    const certificate = this.getLatestCertificate(memberId);
-    return {
-      memberName: profile ? `${profile.first_name ?? ""} ${profile.last_name ?? ""}`.trim() : "\u2014",
-      photoUrl: null,
-      planName: plan?.name ?? null,
-      endDate: subscription?.end_date ?? null,
-      certificateStatus: certificate?.status ?? "missing",
-      memberCreatedAt: profile ? new Date(profile.created_at) : /* @__PURE__ */ new Date(0),
-      subscription,
-      certificate
-    };
+    return __async(this, null, function* () {
+      const profile = this.state.profiles.find((p) => p.id === memberId);
+      const subscription = this.getLatestSubscription(memberId);
+      const plan = subscription ? this.state.plans.find((p) => p.id === subscription.plan_id) : null;
+      const certificate = this.getLatestCertificate(memberId);
+      const photoUrl = profile?.photo_path ? yield this.getSignedUrl(profile.photo_path) : null;
+      return {
+        memberName: profile ? `${profile.first_name ?? ""} ${profile.last_name ?? ""}`.trim() : "\u2014",
+        photoUrl,
+        planName: plan?.name ?? null,
+        endDate: subscription?.end_date ?? null,
+        sessionsRemaining: subscription?.sessions_remaining ?? null,
+        certificateStatus: certificate?.status ?? "missing",
+        memberCreatedAt: profile ? new Date(profile.created_at) : /* @__PURE__ */ new Date(0),
+        subscription,
+        certificate
+      };
+    });
   }
   verifyCheckinQr(staffId, token) {
     return __async(this, null, function* () {
@@ -23908,12 +23912,13 @@ var MockBackendService = class _MockBackendService {
           photoUrl: null,
           planName: null,
           endDate: null,
+          sessionsRemaining: null,
           certificateStatus: "missing"
         };
       }
       const notExpired = Math.floor(Date.now() / 1e3) < payload.exp;
       const jtiAlreadyUsed = this.state.accessLogs.some((l) => l.token_jti === payload.jti);
-      const snapshot = this.buildMemberSnapshot(payload.sub);
+      const snapshot = yield this.buildMemberSnapshot(payload.sub);
       const subscriptionActive = isSubscriptionEligibleForAccess(snapshot.subscription ? {
         status: snapshot.subscription.status,
         end_date: snapshot.subscription.end_date,
@@ -23939,13 +23944,14 @@ var MockBackendService = class _MockBackendService {
         photoUrl: snapshot.photoUrl,
         planName: snapshot.planName,
         endDate: snapshot.endDate,
+        sessionsRemaining: snapshot.sessionsRemaining,
         certificateStatus: snapshot.certificateStatus
       };
     });
   }
   verifyCheckinManual(staffId, memberId) {
     return __async(this, null, function* () {
-      const snapshot = this.buildMemberSnapshot(memberId);
+      const snapshot = yield this.buildMemberSnapshot(memberId);
       this.logAccess(memberId, staffId, "granted", "manual", null);
       return {
         result: "granted",
@@ -23953,6 +23959,7 @@ var MockBackendService = class _MockBackendService {
         photoUrl: snapshot.photoUrl,
         planName: snapshot.planName,
         endDate: snapshot.endDate,
+        sessionsRemaining: snapshot.sessionsRemaining,
         certificateStatus: snapshot.certificateStatus
       };
     });
@@ -24066,4 +24073,4 @@ export {
   SupabaseService,
   MockBackendService
 };
-//# sourceMappingURL=chunk-NZILXJS5.js.map
+//# sourceMappingURL=chunk-DLQI4DZU.js.map

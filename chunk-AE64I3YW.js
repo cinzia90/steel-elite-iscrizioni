@@ -1,11 +1,11 @@
 import {
   it
-} from "./chunk-VDIJZGGP.js";
+} from "./chunk-THOMXI5H.js";
 import {
   MockBackendService,
   SupabaseService,
   environment
-} from "./chunk-NZILXJS5.js";
+} from "./chunk-DLQI4DZU.js";
 import {
   CommonModule,
   Component,
@@ -172,4 +172,4 @@ var AdminDashboardComponent = class _AdminDashboardComponent {
 export {
   AdminDashboardComponent
 };
-//# sourceMappingURL=chunk-5AWQUO6P.js.map
+//# sourceMappingURL=chunk-AE64I3YW.js.map

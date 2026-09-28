@@ -3,18 +3,18 @@ import {
 } from "./chunk-IZLSK5IJ.js";
 import {
   it
-} from "./chunk-VDIJZGGP.js";
+} from "./chunk-THOMXI5H.js";
 import {
   RouterLink
 } from "./chunk-NKGUCW2I.js";
 import {
   AuthService
-} from "./chunk-5JC44RXL.js";
+} from "./chunk-TBK4PKTS.js";
 import {
   MockBackendService,
   SupabaseService,
   environment
-} from "./chunk-NZILXJS5.js";
+} from "./chunk-DLQI4DZU.js";
 import {
   CommonModule,
   Component,
@@ -222,7 +222,7 @@ function CardComponent_Conditional_7_Case_2_Template(rf, ctx) {
 }
 function CardComponent_Conditional_7_Case_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 2);
+    \u0275\u0275elementStart(0, "p", 20);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(2, "a", 19);
@@ -239,10 +239,10 @@ function CardComponent_Conditional_7_Case_3_Template(rf, ctx) {
 }
 function CardComponent_Conditional_7_Case_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 2);
+    \u0275\u0275elementStart(0, "p", 20);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(2, "a", 20);
+    \u0275\u0275elementStart(2, "a", 21);
     \u0275\u0275text(3);
     \u0275\u0275elementEnd();
   }
@@ -284,6 +284,11 @@ function certificateGraceDeadline(memberCreatedAt, graceDays) {
   const deadline = new Date(memberCreatedAt);
   deadline.setDate(deadline.getDate() + graceDays);
   return deadline;
+}
+function buildCheckinUrl(token) {
+  const url = new URL("staff/check-in", document.baseURI);
+  url.searchParams.set("token", token);
+  return url.toString();
 }
 var CardComponent = class _CardComponent {
   auth;
@@ -446,7 +451,7 @@ var CardComponent = class _CardComponent {
         const userId = this.auth.user()?.id;
         const token = userId ? this.mock.issueAccessToken(userId) : null;
         this.rawToken.set(token);
-        this.qrDataUrl.set(token ? yield QRCode.toDataURL(token, { margin: 1, width: 280 }) : null);
+        this.qrDataUrl.set(token ? yield QRCode.toDataURL(buildCheckinUrl(token), { margin: 1, width: 280 }) : null);
         return;
       }
       const { data, error } = yield this.supabase.client.functions.invoke("issue-access-token", { body: {} });
@@ -454,7 +459,7 @@ var CardComponent = class _CardComponent {
         this.qrDataUrl.set(null);
         return;
       }
-      this.qrDataUrl.set(yield QRCode.toDataURL(data.token, { margin: 1, width: 280 }));
+      this.qrDataUrl.set(yield QRCode.toDataURL(buildCheckinUrl(data.token), { margin: 1, width: 280 }));
     });
   }
   copyToken() {
@@ -474,7 +479,7 @@ var CardComponent = class _CardComponent {
   static \u0275fac = function CardComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CardComponent)(\u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(SupabaseService), \u0275\u0275directiveInject(MockBackendService));
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CardComponent, selectors: [["app-card"]], decls: 8, vars: 2, consts: [[1, "card-page"], [1, "card"], [1, "status"], [1, "status", "error"], [1, "status-block"], ["alt", "", 1, "photo", 3, "src"], ["routerLink", "/iscriviti/profilo", 1, "photo-reminder"], [1, "member-info"], [1, "plan"], [1, "expiry"], ["routerLink", "/iscriviti/certificato", 1, "certificate-reminder"], [1, "hint"], [1, "debug-token"], ["alt", "QR di accesso", 1, "qr", 3, "src"], [1, "progress-track"], [1, "progress-fill"], [1, "debug-label"], ["readonly", "", "rows", "3", 3, "click"], ["type", "button", 3, "click"], ["routerLink", "/iscriviti"], ["routerLink", "/iscriviti/certificato"]], template: function CardComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CardComponent, selectors: [["app-card"]], decls: 8, vars: 2, consts: [[1, "card-page"], [1, "card"], [1, "status"], [1, "status", "error"], [1, "status-block"], ["alt", "", 1, "photo", 3, "src"], ["routerLink", "/iscriviti/profilo", 1, "photo-reminder"], [1, "member-info"], [1, "plan"], [1, "expiry"], ["routerLink", "/iscriviti/certificato", 1, "certificate-reminder"], [1, "hint"], [1, "debug-token"], ["alt", "QR di accesso", 1, "qr", 3, "src"], [1, "progress-track"], [1, "progress-fill"], [1, "debug-label"], ["readonly", "", "rows", "3", 3, "click"], ["type", "button", 3, "click"], ["routerLink", "/iscriviti"], [1, "status", "alert"], ["routerLink", "/iscriviti/certificato"]], template: function CardComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 0)(1, "div", 1)(2, "h1");
       \u0275\u0275text(3);
@@ -488,7 +493,7 @@ var CardComponent = class _CardComponent {
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.loading() ? 4 : ctx.offline() ? 5 : ctx.statusReason() === "active" ? 6 : 7);
     }
-  }, dependencies: [CommonModule, RouterLink], styles: ["\n\n.card-page[_ngcontent-%COMP%] {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: var(--se-space-4);\n}\n.card[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 360px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(201, 162, 39, 0.25);\n  border-radius: var(--se-radius-lg);\n  padding: var(--se-space-5) var(--se-space-4);\n  text-align: center;\n}\nh1[_ngcontent-%COMP%] {\n  margin: 0;\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n}\n.status[_ngcontent-%COMP%] {\n  color: var(--se-silver-dark);\n  font-size: 14px;\n}\n.status.error[_ngcontent-%COMP%] {\n  color: #e05c5c;\n}\n.status-block[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n}\n.status-block[_ngcontent-%COMP%]   a[_ngcontent-%COMP%] {\n  color: var(--se-black);\n  background:\n    linear-gradient(\n      135deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  padding: 10px 20px;\n  border-radius: var(--se-radius-sm);\n  font-weight: 700;\n  text-decoration: none;\n}\n.photo[_ngcontent-%COMP%] {\n  width: 88px;\n  height: 88px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 2px solid var(--se-gold);\n}\n.photo-reminder[_ngcontent-%COMP%] {\n  display: block;\n  font-size: 12px;\n  color: var(--se-gold-light);\n  background: rgba(201, 162, 39, 0.12);\n  border: 1px dashed var(--se-gold);\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-2);\n  text-decoration: none;\n}\n.member-info[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n.plan[_ngcontent-%COMP%] {\n  font-weight: 600;\n}\n.expiry[_ngcontent-%COMP%] {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n}\n.certificate-reminder[_ngcontent-%COMP%] {\n  display: block;\n  font-size: 12px;\n  color: var(--se-gold-light);\n  background: rgba(201, 162, 39, 0.12);\n  border: 1px dashed var(--se-gold);\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-2);\n  text-decoration: none;\n}\n.qr[_ngcontent-%COMP%] {\n  width: 200px;\n  height: 200px;\n  background: #fff;\n  border-radius: var(--se-radius-sm);\n  padding: 8px;\n}\n.progress-track[_ngcontent-%COMP%] {\n  width: 200px;\n  height: 4px;\n  background: rgba(255, 255, 255, 0.1);\n  border-radius: 2px;\n  overflow: hidden;\n}\n.progress-fill[_ngcontent-%COMP%] {\n  height: 100%;\n  background:\n    linear-gradient(\n      90deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  transition: width 1s linear;\n}\n.hint[_ngcontent-%COMP%] {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n  margin: 0;\n}\n.debug-token[_ngcontent-%COMP%] {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-1);\n  padding-top: var(--se-space-3);\n  border-top: 1px dashed rgba(255, 255, 255, 0.15);\n}\n.debug-label[_ngcontent-%COMP%] {\n  font-size: 11px;\n  color: var(--se-silver-dark);\n  margin: 0;\n}\n.debug-token[_ngcontent-%COMP%]   textarea[_ngcontent-%COMP%] {\n  width: 100%;\n  resize: none;\n  font-family: monospace;\n  font-size: 10px;\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid var(--se-silver-dark);\n  border-radius: var(--se-radius-sm);\n  color: var(--se-silver);\n  padding: 6px;\n  word-break: break-all;\n}\n.debug-token[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  align-self: center;\n  padding: 6px 14px;\n  border: none;\n  border-radius: var(--se-radius-sm);\n  background: rgba(255, 255, 255, 0.1);\n  color: var(--se-silver);\n  font-size: 12px;\n  cursor: pointer;\n}\n/*# sourceMappingURL=card.component.css.map */"] });
+  }, dependencies: [CommonModule, RouterLink], styles: ["\n\n.card-page[_ngcontent-%COMP%] {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: var(--se-space-4);\n}\n.card[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 360px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(201, 162, 39, 0.25);\n  border-radius: var(--se-radius-lg);\n  padding: var(--se-space-5) var(--se-space-4);\n  text-align: center;\n}\nh1[_ngcontent-%COMP%] {\n  margin: 0;\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n}\n.status[_ngcontent-%COMP%] {\n  color: var(--se-silver-dark);\n  font-size: 14px;\n}\n.status.error[_ngcontent-%COMP%] {\n  color: #e05c5c;\n}\n.status.alert[_ngcontent-%COMP%] {\n  color: #ff8a8a;\n  font-weight: 700;\n  background: rgba(224, 92, 92, 0.12);\n  border: 1px solid #e05c5c;\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-3);\n}\n.status-block[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n}\n.status-block[_ngcontent-%COMP%]   a[_ngcontent-%COMP%] {\n  color: var(--se-black);\n  background:\n    linear-gradient(\n      135deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  padding: 10px 20px;\n  border-radius: var(--se-radius-sm);\n  font-weight: 700;\n  text-decoration: none;\n}\n.photo[_ngcontent-%COMP%] {\n  width: 88px;\n  height: 88px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 2px solid var(--se-gold);\n}\n.photo-reminder[_ngcontent-%COMP%] {\n  display: block;\n  font-size: 12px;\n  color: var(--se-gold-light);\n  background: rgba(201, 162, 39, 0.12);\n  border: 1px dashed var(--se-gold);\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-2);\n  text-decoration: none;\n}\n.member-info[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n.plan[_ngcontent-%COMP%] {\n  font-weight: 600;\n}\n.expiry[_ngcontent-%COMP%] {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n}\n.certificate-reminder[_ngcontent-%COMP%] {\n  display: block;\n  font-size: 12px;\n  color: var(--se-gold-light);\n  background: rgba(201, 162, 39, 0.12);\n  border: 1px dashed var(--se-gold);\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-2);\n  text-decoration: none;\n}\n.qr[_ngcontent-%COMP%] {\n  width: 200px;\n  height: 200px;\n  background: #fff;\n  border-radius: var(--se-radius-sm);\n  padding: 8px;\n}\n.progress-track[_ngcontent-%COMP%] {\n  width: 200px;\n  height: 4px;\n  background: rgba(255, 255, 255, 0.1);\n  border-radius: 2px;\n  overflow: hidden;\n}\n.progress-fill[_ngcontent-%COMP%] {\n  height: 100%;\n  background:\n    linear-gradient(\n      90deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  transition: width 1s linear;\n}\n.hint[_ngcontent-%COMP%] {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n  margin: 0;\n}\n.debug-token[_ngcontent-%COMP%] {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-1);\n  padding-top: var(--se-space-3);\n  border-top: 1px dashed rgba(255, 255, 255, 0.15);\n}\n.debug-label[_ngcontent-%COMP%] {\n  font-size: 11px;\n  color: var(--se-silver-dark);\n  margin: 0;\n}\n.debug-token[_ngcontent-%COMP%]   textarea[_ngcontent-%COMP%] {\n  width: 100%;\n  resize: none;\n  font-family: monospace;\n  font-size: 10px;\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid var(--se-silver-dark);\n  border-radius: var(--se-radius-sm);\n  color: var(--se-silver);\n  padding: 6px;\n  word-break: break-all;\n}\n.debug-token[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  align-self: center;\n  padding: 6px 14px;\n  border: none;\n  border-radius: var(--se-radius-sm);\n  background: rgba(255, 255, 255, 0.1);\n  color: var(--se-silver);\n  font-size: 12px;\n  cursor: pointer;\n}\n/*# sourceMappingURL=card.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CardComponent, [{
@@ -548,11 +553,11 @@ var CardComponent = class _CardComponent {
             <p class="status">{{ t.pendingPayment }}</p>
           }
           @case ('expired') {
-            <p class="status">{{ t.expired }}</p>
+            <p class="status alert">{{ t.expired }}</p>
             <a routerLink="/iscriviti">{{ t.renew }}</a>
           }
           @case ('certificate_missing') {
-            <p class="status">{{ t.certificateMissing }}</p>
+            <p class="status alert">{{ t.certificateMissing }}</p>
             <a routerLink="/iscriviti/certificato">{{ t.uploadCertificate }}</a>
           }
           @case ('certificate_pending') {
@@ -563,13 +568,13 @@ var CardComponent = class _CardComponent {
     }
   </div>
 </div>
-`, styles: ["/* src/app/features/card/card.component.scss */\n.card-page {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: var(--se-space-4);\n}\n.card {\n  width: 100%;\n  max-width: 360px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(201, 162, 39, 0.25);\n  border-radius: var(--se-radius-lg);\n  padding: var(--se-space-5) var(--se-space-4);\n  text-align: center;\n}\nh1 {\n  margin: 0;\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n}\n.status {\n  color: var(--se-silver-dark);\n  font-size: 14px;\n}\n.status.error {\n  color: #e05c5c;\n}\n.status-block {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n}\n.status-block a {\n  color: var(--se-black);\n  background:\n    linear-gradient(\n      135deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  padding: 10px 20px;\n  border-radius: var(--se-radius-sm);\n  font-weight: 700;\n  text-decoration: none;\n}\n.photo {\n  width: 88px;\n  height: 88px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 2px solid var(--se-gold);\n}\n.photo-reminder {\n  display: block;\n  font-size: 12px;\n  color: var(--se-gold-light);\n  background: rgba(201, 162, 39, 0.12);\n  border: 1px dashed var(--se-gold);\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-2);\n  text-decoration: none;\n}\n.member-info {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n.plan {\n  font-weight: 600;\n}\n.expiry {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n}\n.certificate-reminder {\n  display: block;\n  font-size: 12px;\n  color: var(--se-gold-light);\n  background: rgba(201, 162, 39, 0.12);\n  border: 1px dashed var(--se-gold);\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-2);\n  text-decoration: none;\n}\n.qr {\n  width: 200px;\n  height: 200px;\n  background: #fff;\n  border-radius: var(--se-radius-sm);\n  padding: 8px;\n}\n.progress-track {\n  width: 200px;\n  height: 4px;\n  background: rgba(255, 255, 255, 0.1);\n  border-radius: 2px;\n  overflow: hidden;\n}\n.progress-fill {\n  height: 100%;\n  background:\n    linear-gradient(\n      90deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  transition: width 1s linear;\n}\n.hint {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n  margin: 0;\n}\n.debug-token {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-1);\n  padding-top: var(--se-space-3);\n  border-top: 1px dashed rgba(255, 255, 255, 0.15);\n}\n.debug-label {\n  font-size: 11px;\n  color: var(--se-silver-dark);\n  margin: 0;\n}\n.debug-token textarea {\n  width: 100%;\n  resize: none;\n  font-family: monospace;\n  font-size: 10px;\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid var(--se-silver-dark);\n  border-radius: var(--se-radius-sm);\n  color: var(--se-silver);\n  padding: 6px;\n  word-break: break-all;\n}\n.debug-token button {\n  align-self: center;\n  padding: 6px 14px;\n  border: none;\n  border-radius: var(--se-radius-sm);\n  background: rgba(255, 255, 255, 0.1);\n  color: var(--se-silver);\n  font-size: 12px;\n  cursor: pointer;\n}\n/*# sourceMappingURL=card.component.css.map */\n"] }]
+`, styles: ["/* src/app/features/card/card.component.scss */\n.card-page {\n  min-height: 100vh;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  padding: var(--se-space-4);\n}\n.card {\n  width: 100%;\n  max-width: 360px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(201, 162, 39, 0.25);\n  border-radius: var(--se-radius-lg);\n  padding: var(--se-space-5) var(--se-space-4);\n  text-align: center;\n}\nh1 {\n  margin: 0;\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n}\n.status {\n  color: var(--se-silver-dark);\n  font-size: 14px;\n}\n.status.error {\n  color: #e05c5c;\n}\n.status.alert {\n  color: #ff8a8a;\n  font-weight: 700;\n  background: rgba(224, 92, 92, 0.12);\n  border: 1px solid #e05c5c;\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-3);\n}\n.status-block {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n}\n.status-block a {\n  color: var(--se-black);\n  background:\n    linear-gradient(\n      135deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  padding: 10px 20px;\n  border-radius: var(--se-radius-sm);\n  font-weight: 700;\n  text-decoration: none;\n}\n.photo {\n  width: 88px;\n  height: 88px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 2px solid var(--se-gold);\n}\n.photo-reminder {\n  display: block;\n  font-size: 12px;\n  color: var(--se-gold-light);\n  background: rgba(201, 162, 39, 0.12);\n  border: 1px dashed var(--se-gold);\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-2);\n  text-decoration: none;\n}\n.member-info {\n  display: flex;\n  flex-direction: column;\n  gap: 2px;\n}\n.plan {\n  font-weight: 600;\n}\n.expiry {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n}\n.certificate-reminder {\n  display: block;\n  font-size: 12px;\n  color: var(--se-gold-light);\n  background: rgba(201, 162, 39, 0.12);\n  border: 1px dashed var(--se-gold);\n  border-radius: var(--se-radius-sm);\n  padding: var(--se-space-2);\n  text-decoration: none;\n}\n.qr {\n  width: 200px;\n  height: 200px;\n  background: #fff;\n  border-radius: var(--se-radius-sm);\n  padding: 8px;\n}\n.progress-track {\n  width: 200px;\n  height: 4px;\n  background: rgba(255, 255, 255, 0.1);\n  border-radius: 2px;\n  overflow: hidden;\n}\n.progress-fill {\n  height: 100%;\n  background:\n    linear-gradient(\n      90deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  transition: width 1s linear;\n}\n.hint {\n  font-size: 12px;\n  color: var(--se-silver-dark);\n  margin: 0;\n}\n.debug-token {\n  width: 100%;\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-1);\n  padding-top: var(--se-space-3);\n  border-top: 1px dashed rgba(255, 255, 255, 0.15);\n}\n.debug-label {\n  font-size: 11px;\n  color: var(--se-silver-dark);\n  margin: 0;\n}\n.debug-token textarea {\n  width: 100%;\n  resize: none;\n  font-family: monospace;\n  font-size: 10px;\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid var(--se-silver-dark);\n  border-radius: var(--se-radius-sm);\n  color: var(--se-silver);\n  padding: 6px;\n  word-break: break-all;\n}\n.debug-token button {\n  align-self: center;\n  padding: 6px 14px;\n  border: none;\n  border-radius: var(--se-radius-sm);\n  background: rgba(255, 255, 255, 0.1);\n  color: var(--se-silver);\n  font-size: 12px;\n  cursor: pointer;\n}\n/*# sourceMappingURL=card.component.css.map */\n"] }]
   }], () => [{ type: AuthService }, { type: SupabaseService }, { type: MockBackendService }], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CardComponent, { className: "CardComponent", filePath: "src/app/features/card/card.component.ts", lineNumber: 34 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CardComponent, { className: "CardComponent", filePath: "src/app/features/card/card.component.ts", lineNumber: 44 });
 })();
 export {
   CardComponent
 };
-//# sourceMappingURL=chunk-BNJQV3QS.js.map
+//# sourceMappingURL=chunk-G65LLWEQ.js.map

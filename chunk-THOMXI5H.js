@@ -133,6 +133,13 @@ var it = {
       certificate_invalid: "Certificato medico mancante, scaduto o non approvato",
       anti_passback: "Ingresso gi\xE0 registrato di recente"
     },
+    certificateStatuses: {
+      approved: "Certificato approvato",
+      pending: "Certificato in attesa di approvazione",
+      rejected: "Certificato rifiutato",
+      missing: "Certificato mancante"
+    },
+    sessionsRemaining: "lezioni rimaste",
     cameraError: "Impossibile accedere alla fotocamera.",
     errorGeneric: "Si \xE8 verificato un errore durante la verifica."
   },
@@ -260,4 +267,4 @@ var it = {
 export {
   it
 };
-//# sourceMappingURL=chunk-VDIJZGGP.js.map
+//# sourceMappingURL=chunk-THOMXI5H.js.map

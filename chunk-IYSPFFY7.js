@@ -6,15 +6,18 @@ import {
 } from "./chunk-XXIBBBHG.js";
 import {
   it
-} from "./chunk-VDIJZGGP.js";
+} from "./chunk-THOMXI5H.js";
+import {
+  ActivatedRoute
+} from "./chunk-NKGUCW2I.js";
 import {
   AuthService
-} from "./chunk-5JC44RXL.js";
+} from "./chunk-TBK4PKTS.js";
 import {
   MockBackendService,
   SupabaseService,
   environment
-} from "./chunk-NZILXJS5.js";
+} from "./chunk-DLQI4DZU.js";
 import {
   CommonModule,
   Component,
@@ -27508,33 +27511,55 @@ function CheckInComponent_Conditional_1_Conditional_7_Conditional_2_Template(rf,
     \u0275\u0275textInterpolate1("Scadenza: ", (tmp_3_0 = ctx_r2.resultData()) == null ? null : tmp_3_0.endDate, "");
   }
 }
+function CheckInComponent_Conditional_1_Conditional_7_Conditional_3_Template(rf, ctx) {
+  if (rf & 1) {
+    \u0275\u0275elementStart(0, "p", 10);
+    \u0275\u0275text(1);
+    \u0275\u0275elementEnd();
+  }
+  if (rf & 2) {
+    let tmp_3_0;
+    const ctx_r2 = \u0275\u0275nextContext(3);
+    \u0275\u0275advance();
+    \u0275\u0275textInterpolate2("", (tmp_3_0 = ctx_r2.resultData()) == null ? null : tmp_3_0.sessionsRemaining, " ", ctx_r2.t.sessionsRemaining, "");
+  }
+}
 function CheckInComponent_Conditional_1_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementStart(0, "p", 9);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(2, CheckInComponent_Conditional_1_Conditional_7_Conditional_2_Template, 2, 1, "p", 10);
+    \u0275\u0275template(2, CheckInComponent_Conditional_1_Conditional_7_Conditional_2_Template, 2, 1, "p", 10)(3, CheckInComponent_Conditional_1_Conditional_7_Conditional_3_Template, 2, 2, "p", 10);
+    \u0275\u0275elementStart(4, "p", 11);
+    \u0275\u0275text(5);
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     let tmp_2_0;
     let tmp_3_0;
+    let tmp_4_0;
+    let tmp_5_0;
     const ctx_r2 = \u0275\u0275nextContext(2);
     \u0275\u0275advance();
     \u0275\u0275textInterpolate((tmp_2_0 = ctx_r2.resultData()) == null ? null : tmp_2_0.planName);
     \u0275\u0275advance();
     \u0275\u0275conditional(((tmp_3_0 = ctx_r2.resultData()) == null ? null : tmp_3_0.endDate) ? 2 : -1);
+    \u0275\u0275advance();
+    \u0275\u0275conditional(((tmp_4_0 = ctx_r2.resultData()) == null ? null : tmp_4_0.sessionsRemaining) !== null && ((tmp_4_0 = ctx_r2.resultData()) == null ? null : tmp_4_0.sessionsRemaining) !== void 0 ? 3 : -1);
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate(ctx_r2.certificateStatusLabel((tmp_5_0 = ctx_r2.resultData()) == null ? null : tmp_5_0.certificateStatus));
   }
 }
 function CheckInComponent_Conditional_1_Conditional_10_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 11);
+    \u0275\u0275elementStart(0, "div", 12);
     \u0275\u0275listener("click", function CheckInComponent_Conditional_1_Conditional_10_Template_div_click_0_listener() {
       \u0275\u0275restoreView(_r4);
       const ctx_r2 = \u0275\u0275nextContext(2);
       return \u0275\u0275resetView(ctx_r2.togglePhotoZoom());
     });
-    \u0275\u0275element(1, "img", 12);
+    \u0275\u0275element(1, "img", 13);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -27555,7 +27580,7 @@ function CheckInComponent_Conditional_1_Template(rf, ctx) {
     \u0275\u0275elementStart(4, "p", 4);
     \u0275\u0275text(5);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(6, CheckInComponent_Conditional_1_Conditional_6_Template, 2, 1, "p", 5)(7, CheckInComponent_Conditional_1_Conditional_7_Template, 3, 2);
+    \u0275\u0275template(6, CheckInComponent_Conditional_1_Conditional_6_Template, 2, 1, "p", 5)(7, CheckInComponent_Conditional_1_Conditional_7_Template, 6, 4);
     \u0275\u0275elementStart(8, "button", 6);
     \u0275\u0275listener("click", function CheckInComponent_Conditional_1_Template_button_click_8_listener() {
       \u0275\u0275restoreView(_r1);
@@ -27592,7 +27617,7 @@ function CheckInComponent_Conditional_1_Template(rf, ctx) {
 }
 function CheckInComponent_Conditional_2_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 13);
+    \u0275\u0275elementStart(0, "p", 14);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -27641,7 +27666,7 @@ function CheckInComponent_Conditional_2_Conditional_3_Conditional_4_Conditional_
 function CheckInComponent_Conditional_2_Conditional_3_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
     const _r7 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 16)(1, "button", 6);
+    \u0275\u0275elementStart(0, "div", 17)(1, "button", 6);
     \u0275\u0275listener("click", function CheckInComponent_Conditional_2_Conditional_3_Conditional_4_Template_button_click_1_listener() {
       \u0275\u0275restoreView(_r7);
       const ctx_r2 = \u0275\u0275nextContext(3);
@@ -27663,11 +27688,11 @@ function CheckInComponent_Conditional_2_Conditional_3_Conditional_4_Template(rf,
 function CheckInComponent_Conditional_2_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     const _r5 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 14);
-    \u0275\u0275element(1, "video", 15, 0);
-    \u0275\u0275template(3, CheckInComponent_Conditional_2_Conditional_3_Conditional_3_Template, 2, 1, "button")(4, CheckInComponent_Conditional_2_Conditional_3_Conditional_4_Template, 4, 2, "div", 16);
+    \u0275\u0275elementStart(0, "div", 15);
+    \u0275\u0275element(1, "video", 16, 0);
+    \u0275\u0275template(3, CheckInComponent_Conditional_2_Conditional_3_Conditional_3_Template, 2, 1, "button")(4, CheckInComponent_Conditional_2_Conditional_3_Conditional_4_Template, 4, 2, "div", 17);
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "button", 17);
+    \u0275\u0275elementStart(5, "button", 18);
     \u0275\u0275listener("click", function CheckInComponent_Conditional_2_Conditional_3_Template_button_click_5_listener() {
       \u0275\u0275restoreView(_r5);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -27688,7 +27713,7 @@ function CheckInComponent_Conditional_2_Conditional_3_Template(rf, ctx) {
 }
 function CheckInComponent_Conditional_2_Conditional_4_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 20);
+    \u0275\u0275elementStart(0, "p", 21);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -27701,7 +27726,7 @@ function CheckInComponent_Conditional_2_Conditional_4_Conditional_2_Template(rf,
 function CheckInComponent_Conditional_2_Conditional_4_For_5_Template(rf, ctx) {
   if (rf & 1) {
     const _r10 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 22)(1, "span");
+    \u0275\u0275elementStart(0, "div", 23)(1, "span");
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(3, "button", 6);
@@ -27725,7 +27750,7 @@ function CheckInComponent_Conditional_2_Conditional_4_For_5_Template(rf, ctx) {
 function CheckInComponent_Conditional_2_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
     const _r9 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "div", 18)(1, "input", 19);
+    \u0275\u0275elementStart(0, "div", 19)(1, "input", 20);
     \u0275\u0275twoWayListener("ngModelChange", function CheckInComponent_Conditional_2_Conditional_4_Template_input_ngModelChange_1_listener($event) {
       \u0275\u0275restoreView(_r9);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -27738,11 +27763,11 @@ function CheckInComponent_Conditional_2_Conditional_4_Template(rf, ctx) {
       return \u0275\u0275resetView(ctx_r2.searchMembers());
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275template(2, CheckInComponent_Conditional_2_Conditional_4_Conditional_2_Template, 2, 1, "p", 20);
-    \u0275\u0275elementStart(3, "div", 21);
-    \u0275\u0275repeaterCreate(4, CheckInComponent_Conditional_2_Conditional_4_For_5_Template, 5, 3, "div", 22, _forTrack0);
+    \u0275\u0275template(2, CheckInComponent_Conditional_2_Conditional_4_Conditional_2_Template, 2, 1, "p", 21);
+    \u0275\u0275elementStart(3, "div", 22);
+    \u0275\u0275repeaterCreate(4, CheckInComponent_Conditional_2_Conditional_4_For_5_Template, 5, 3, "div", 23, _forTrack0);
     \u0275\u0275elementEnd()();
-    \u0275\u0275elementStart(6, "button", 17);
+    \u0275\u0275elementStart(6, "button", 18);
     \u0275\u0275listener("click", function CheckInComponent_Conditional_2_Conditional_4_Template_button_click_6_listener() {
       \u0275\u0275restoreView(_r9);
       const ctx_r2 = \u0275\u0275nextContext(2);
@@ -27769,7 +27794,7 @@ function CheckInComponent_Conditional_2_Template(rf, ctx) {
     \u0275\u0275elementStart(0, "h1");
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
-    \u0275\u0275template(2, CheckInComponent_Conditional_2_Conditional_2_Template, 2, 1, "p", 13)(3, CheckInComponent_Conditional_2_Conditional_3_Template, 7, 4)(4, CheckInComponent_Conditional_2_Conditional_4_Template, 8, 4);
+    \u0275\u0275template(2, CheckInComponent_Conditional_2_Conditional_2_Template, 2, 1, "p", 14)(3, CheckInComponent_Conditional_2_Conditional_3_Template, 7, 4)(4, CheckInComponent_Conditional_2_Conditional_4_Template, 8, 4);
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext();
@@ -27781,11 +27806,20 @@ function CheckInComponent_Conditional_2_Template(rf, ctx) {
     \u0275\u0275conditional(!ctx_r2.manualMode() ? 3 : 4);
   }
 }
+function extractToken(scannedText) {
+  try {
+    const url = new URL(scannedText);
+    return url.searchParams.get("token") ?? scannedText;
+  } catch {
+    return scannedText;
+  }
+}
 var RESULT_DISPLAY_MS = 3e3;
 var CheckInComponent = class _CheckInComponent {
   supabase;
   auth;
   mock;
+  route;
   t = it.checkin;
   videoElement;
   scanning = signal(false);
@@ -27801,10 +27835,17 @@ var CheckInComponent = class _CheckInComponent {
   controls = null;
   processing = false;
   resultTimeout = null;
-  constructor(supabase, auth, mock) {
+  constructor(supabase, auth, mock, route) {
     this.supabase = supabase;
     this.auth = auth;
     this.mock = mock;
+    this.route = route;
+  }
+  ngOnInit() {
+    const token = this.route.snapshot.queryParamMap.get("token");
+    if (token) {
+      this.handleScan(token);
+    }
   }
   ngOnDestroy() {
     this.stopScanning();
@@ -27820,7 +27861,7 @@ var CheckInComponent = class _CheckInComponent {
         this.codeReader = new BrowserQRCodeReader2();
         this.controls = yield this.codeReader.decodeFromConstraints({ video: { facingMode: "environment" } }, this.videoElement.nativeElement, (result) => {
           if (result && !this.processing) {
-            this.handleScan(result.getText());
+            this.handleScan(extractToken(result.getText()));
           }
         });
         this.scanning.set(true);
@@ -27962,8 +28003,14 @@ var CheckInComponent = class _CheckInComponent {
     }
     return this.t.reasons[reason] ?? reason;
   }
+  certificateStatusLabel(status) {
+    if (!status) {
+      return "";
+    }
+    return this.t.certificateStatuses[status] ?? status;
+  }
   static \u0275fac = function CheckInComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _CheckInComponent)(\u0275\u0275directiveInject(SupabaseService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(MockBackendService));
+    return new (__ngFactoryType__ || _CheckInComponent)(\u0275\u0275directiveInject(SupabaseService), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(MockBackendService), \u0275\u0275directiveInject(ActivatedRoute));
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CheckInComponent, selectors: [["app-check-in"]], viewQuery: function CheckInComponent_Query(rf, ctx) {
     if (rf & 1) {
@@ -27973,7 +28020,7 @@ var CheckInComponent = class _CheckInComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.videoElement = _t.first);
     }
-  }, decls: 3, vars: 1, consts: [["video", ""], [1, "checkin-page"], [1, "result-overlay"], ["alt", "", 1, "result-photo", 3, "src"], [1, "member-name"], [1, "reason"], [3, "click"], [1, "photo-lightbox"], ["alt", "", 1, "result-photo", 3, "click", "src"], [1, "plan"], [1, "expiry"], [1, "photo-lightbox", 3, "click"], ["alt", "", 3, "src"], [1, "error"], [1, "scanner-area"], ["playsinline", "", 1, "video"], [1, "scanner-controls"], [1, "link-button", 3, "click"], [1, "manual-search"], ["type", "text", 3, "ngModelChange", "ngModel", "placeholder"], [1, "status"], [1, "manual-results"], [1, "manual-result"]], template: function CheckInComponent_Template(rf, ctx) {
+  }, decls: 3, vars: 1, consts: [["video", ""], [1, "checkin-page"], [1, "result-overlay"], ["alt", "", 1, "result-photo", 3, "src"], [1, "member-name"], [1, "reason"], [3, "click"], [1, "photo-lightbox"], ["alt", "", 1, "result-photo", 3, "click", "src"], [1, "plan"], [1, "expiry"], [1, "certificate-status"], [1, "photo-lightbox", 3, "click"], ["alt", "", 3, "src"], [1, "error"], [1, "scanner-area"], ["playsinline", "", 1, "video"], [1, "scanner-controls"], [1, "link-button", 3, "click"], [1, "manual-search"], ["type", "text", 3, "ngModelChange", "ngModel", "placeholder"], [1, "status"], [1, "manual-results"], [1, "manual-result"]], template: function CheckInComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 1);
       \u0275\u0275template(1, CheckInComponent_Conditional_1_Template, 11, 10)(2, CheckInComponent_Conditional_2_Template, 5, 3);
@@ -27983,7 +28030,7 @@ var CheckInComponent = class _CheckInComponent {
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.resultData() ? 1 : 2);
     }
-  }, dependencies: [CommonModule, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel], styles: ["\n\n.checkin-page[_ngcontent-%COMP%] {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: var(--se-space-4);\n  gap: var(--se-space-3);\n}\nh1[_ngcontent-%COMP%] {\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n}\n.error[_ngcontent-%COMP%] {\n  color: #e05c5c;\n  font-size: 13px;\n}\n.scanner-area[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 420px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n}\n.video[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 420px;\n  aspect-ratio: 1/1;\n  object-fit: cover;\n  border-radius: var(--se-radius-md);\n  background: #000;\n}\n.video.hidden[_ngcontent-%COMP%] {\n  display: none;\n}\n.scanner-controls[_ngcontent-%COMP%] {\n  display: flex;\n  gap: var(--se-space-2);\n}\nbutton[_ngcontent-%COMP%] {\n  padding: 12px 20px;\n  border: none;\n  border-radius: var(--se-radius-sm);\n  background:\n    linear-gradient(\n      135deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  color: var(--se-black);\n  font-weight: 700;\n  cursor: pointer;\n}\n.link-button[_ngcontent-%COMP%] {\n  background: none;\n  color: var(--se-gold);\n  font-weight: 600;\n  padding: 8px;\n}\n.manual-search[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 420px;\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-2);\n}\n.manual-search[_ngcontent-%COMP%]   input[_ngcontent-%COMP%] {\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid var(--se-silver-dark);\n  border-radius: var(--se-radius-sm);\n  padding: 10px 12px;\n  color: var(--se-silver);\n  font-size: 15px;\n}\n.status[_ngcontent-%COMP%] {\n  color: var(--se-silver-dark);\n  font-size: 13px;\n}\n.manual-results[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-2);\n}\n.manual-result[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: var(--se-space-2) var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: var(--se-radius-sm);\n}\n.result-overlay[_ngcontent-%COMP%] {\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: var(--se-space-3);\n  padding: var(--se-space-4);\n  text-align: center;\n}\n.result-overlay.granted[_ngcontent-%COMP%] {\n  background: #0d5c2e;\n}\n.result-overlay.denied[_ngcontent-%COMP%] {\n  background: #7a1f1f;\n}\n.result-overlay[_ngcontent-%COMP%]   h1[_ngcontent-%COMP%] {\n  color: #fff;\n  font-size: 28px;\n}\n.result-overlay[_ngcontent-%COMP%]   .result-photo[_ngcontent-%COMP%] {\n  width: 140px;\n  height: 140px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 3px solid #fff;\n  cursor: zoom-in;\n}\n.result-overlay[_ngcontent-%COMP%]   .member-name[_ngcontent-%COMP%] {\n  color: #fff;\n  font-size: 20px;\n  font-weight: 700;\n  margin: 0;\n}\n.result-overlay[_ngcontent-%COMP%]   .reason[_ngcontent-%COMP%], \n.result-overlay[_ngcontent-%COMP%]   .plan[_ngcontent-%COMP%], \n.result-overlay[_ngcontent-%COMP%]   .expiry[_ngcontent-%COMP%] {\n  color: rgba(255, 255, 255, 0.85);\n  margin: 0;\n}\n.result-overlay[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  margin-top: var(--se-space-3);\n  background: #fff;\n}\n.photo-lightbox[_ngcontent-%COMP%] {\n  position: fixed;\n  inset: 0;\n  z-index: 300;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: rgba(0, 0, 0, 0.92);\n  cursor: zoom-out;\n}\n.photo-lightbox[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  max-width: 92vw;\n  max-height: 92vh;\n  border-radius: var(--se-radius-md);\n  object-fit: contain;\n}\n/*# sourceMappingURL=check-in.component.css.map */"] });
+  }, dependencies: [CommonModule, FormsModule, DefaultValueAccessor, NgControlStatus, NgModel], styles: ["\n\n.checkin-page[_ngcontent-%COMP%] {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: var(--se-space-4);\n  gap: var(--se-space-3);\n}\nh1[_ngcontent-%COMP%] {\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n}\n.error[_ngcontent-%COMP%] {\n  color: #e05c5c;\n  font-size: 13px;\n}\n.scanner-area[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 420px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n}\n.video[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 420px;\n  aspect-ratio: 1/1;\n  object-fit: cover;\n  border-radius: var(--se-radius-md);\n  background: #000;\n}\n.video.hidden[_ngcontent-%COMP%] {\n  display: none;\n}\n.scanner-controls[_ngcontent-%COMP%] {\n  display: flex;\n  gap: var(--se-space-2);\n}\nbutton[_ngcontent-%COMP%] {\n  padding: 12px 20px;\n  border: none;\n  border-radius: var(--se-radius-sm);\n  background:\n    linear-gradient(\n      135deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  color: var(--se-black);\n  font-weight: 700;\n  cursor: pointer;\n}\n.link-button[_ngcontent-%COMP%] {\n  background: none;\n  color: var(--se-gold);\n  font-weight: 600;\n  padding: 8px;\n}\n.manual-search[_ngcontent-%COMP%] {\n  width: 100%;\n  max-width: 420px;\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-2);\n}\n.manual-search[_ngcontent-%COMP%]   input[_ngcontent-%COMP%] {\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid var(--se-silver-dark);\n  border-radius: var(--se-radius-sm);\n  padding: 10px 12px;\n  color: var(--se-silver);\n  font-size: 15px;\n}\n.status[_ngcontent-%COMP%] {\n  color: var(--se-silver-dark);\n  font-size: 13px;\n}\n.manual-results[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-2);\n}\n.manual-result[_ngcontent-%COMP%] {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: var(--se-space-2) var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: var(--se-radius-sm);\n}\n.result-overlay[_ngcontent-%COMP%] {\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: var(--se-space-3);\n  padding: var(--se-space-4);\n  text-align: center;\n}\n.result-overlay.granted[_ngcontent-%COMP%] {\n  background: #0d5c2e;\n}\n.result-overlay.denied[_ngcontent-%COMP%] {\n  background: #7a1f1f;\n}\n.result-overlay[_ngcontent-%COMP%]   h1[_ngcontent-%COMP%] {\n  color: #fff;\n  font-size: 28px;\n}\n.result-overlay[_ngcontent-%COMP%]   .result-photo[_ngcontent-%COMP%] {\n  width: 140px;\n  height: 140px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 3px solid #fff;\n  cursor: zoom-in;\n}\n.result-overlay[_ngcontent-%COMP%]   .member-name[_ngcontent-%COMP%] {\n  color: #fff;\n  font-size: 20px;\n  font-weight: 700;\n  margin: 0;\n}\n.result-overlay[_ngcontent-%COMP%]   .reason[_ngcontent-%COMP%], \n.result-overlay[_ngcontent-%COMP%]   .plan[_ngcontent-%COMP%], \n.result-overlay[_ngcontent-%COMP%]   .expiry[_ngcontent-%COMP%] {\n  color: rgba(255, 255, 255, 0.85);\n  margin: 0;\n}\n.result-overlay[_ngcontent-%COMP%]   .certificate-status[_ngcontent-%COMP%] {\n  margin: var(--se-space-1) 0 0;\n  font-size: 12px;\n  color: rgba(255, 255, 255, 0.65);\n  text-transform: uppercase;\n  letter-spacing: 0.03em;\n}\n.result-overlay[_ngcontent-%COMP%]   button[_ngcontent-%COMP%] {\n  margin-top: var(--se-space-3);\n  background: #fff;\n}\n.photo-lightbox[_ngcontent-%COMP%] {\n  position: fixed;\n  inset: 0;\n  z-index: 300;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: rgba(0, 0, 0, 0.92);\n  cursor: zoom-out;\n}\n.photo-lightbox[_ngcontent-%COMP%]   img[_ngcontent-%COMP%] {\n  max-width: 92vw;\n  max-height: 92vh;\n  border-radius: var(--se-radius-md);\n  object-fit: contain;\n}\n/*# sourceMappingURL=check-in.component.css.map */"] });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CheckInComponent, [{
@@ -28003,6 +28050,10 @@ var CheckInComponent = class _CheckInComponent {
         @if (resultData()?.endDate) {
           <p class="expiry">Scadenza: {{ resultData()?.endDate }}</p>
         }
+        @if (resultData()?.sessionsRemaining !== null && resultData()?.sessionsRemaining !== undefined) {
+          <p class="expiry">{{ resultData()?.sessionsRemaining }} {{ t.sessionsRemaining }}</p>
+        }
+        <p class="certificate-status">{{ certificateStatusLabel(resultData()?.certificateStatus) }}</p>
       }
       <button (click)="scanAgainNow()">{{ t.scanAgain }}</button>
     </div>
@@ -28063,16 +28114,16 @@ var CheckInComponent = class _CheckInComponent {
     }
   }
 </div>
-`, styles: ["/* src/app/features/staff/check-in/check-in.component.scss */\n.checkin-page {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: var(--se-space-4);\n  gap: var(--se-space-3);\n}\nh1 {\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n}\n.error {\n  color: #e05c5c;\n  font-size: 13px;\n}\n.scanner-area {\n  width: 100%;\n  max-width: 420px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n}\n.video {\n  width: 100%;\n  max-width: 420px;\n  aspect-ratio: 1/1;\n  object-fit: cover;\n  border-radius: var(--se-radius-md);\n  background: #000;\n}\n.video.hidden {\n  display: none;\n}\n.scanner-controls {\n  display: flex;\n  gap: var(--se-space-2);\n}\nbutton {\n  padding: 12px 20px;\n  border: none;\n  border-radius: var(--se-radius-sm);\n  background:\n    linear-gradient(\n      135deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  color: var(--se-black);\n  font-weight: 700;\n  cursor: pointer;\n}\n.link-button {\n  background: none;\n  color: var(--se-gold);\n  font-weight: 600;\n  padding: 8px;\n}\n.manual-search {\n  width: 100%;\n  max-width: 420px;\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-2);\n}\n.manual-search input {\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid var(--se-silver-dark);\n  border-radius: var(--se-radius-sm);\n  padding: 10px 12px;\n  color: var(--se-silver);\n  font-size: 15px;\n}\n.status {\n  color: var(--se-silver-dark);\n  font-size: 13px;\n}\n.manual-results {\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-2);\n}\n.manual-result {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: var(--se-space-2) var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: var(--se-radius-sm);\n}\n.result-overlay {\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: var(--se-space-3);\n  padding: var(--se-space-4);\n  text-align: center;\n}\n.result-overlay.granted {\n  background: #0d5c2e;\n}\n.result-overlay.denied {\n  background: #7a1f1f;\n}\n.result-overlay h1 {\n  color: #fff;\n  font-size: 28px;\n}\n.result-overlay .result-photo {\n  width: 140px;\n  height: 140px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 3px solid #fff;\n  cursor: zoom-in;\n}\n.result-overlay .member-name {\n  color: #fff;\n  font-size: 20px;\n  font-weight: 700;\n  margin: 0;\n}\n.result-overlay .reason,\n.result-overlay .plan,\n.result-overlay .expiry {\n  color: rgba(255, 255, 255, 0.85);\n  margin: 0;\n}\n.result-overlay button {\n  margin-top: var(--se-space-3);\n  background: #fff;\n}\n.photo-lightbox {\n  position: fixed;\n  inset: 0;\n  z-index: 300;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: rgba(0, 0, 0, 0.92);\n  cursor: zoom-out;\n}\n.photo-lightbox img {\n  max-width: 92vw;\n  max-height: 92vh;\n  border-radius: var(--se-radius-md);\n  object-fit: contain;\n}\n/*# sourceMappingURL=check-in.component.css.map */\n"] }]
-  }], () => [{ type: SupabaseService }, { type: AuthService }, { type: MockBackendService }], { videoElement: [{
+`, styles: ["/* src/app/features/staff/check-in/check-in.component.scss */\n.checkin-page {\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: var(--se-space-4);\n  gap: var(--se-space-3);\n}\nh1 {\n  color: var(--se-gold-light);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  font-size: 20px;\n}\n.error {\n  color: #e05c5c;\n  font-size: 13px;\n}\n.scanner-area {\n  width: 100%;\n  max-width: 420px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  gap: var(--se-space-3);\n}\n.video {\n  width: 100%;\n  max-width: 420px;\n  aspect-ratio: 1/1;\n  object-fit: cover;\n  border-radius: var(--se-radius-md);\n  background: #000;\n}\n.video.hidden {\n  display: none;\n}\n.scanner-controls {\n  display: flex;\n  gap: var(--se-space-2);\n}\nbutton {\n  padding: 12px 20px;\n  border: none;\n  border-radius: var(--se-radius-sm);\n  background:\n    linear-gradient(\n      135deg,\n      var(--se-gold-light),\n      var(--se-gold));\n  color: var(--se-black);\n  font-weight: 700;\n  cursor: pointer;\n}\n.link-button {\n  background: none;\n  color: var(--se-gold);\n  font-weight: 600;\n  padding: 8px;\n}\n.manual-search {\n  width: 100%;\n  max-width: 420px;\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-2);\n}\n.manual-search input {\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid var(--se-silver-dark);\n  border-radius: var(--se-radius-sm);\n  padding: 10px 12px;\n  color: var(--se-silver);\n  font-size: 15px;\n}\n.status {\n  color: var(--se-silver-dark);\n  font-size: 13px;\n}\n.manual-results {\n  display: flex;\n  flex-direction: column;\n  gap: var(--se-space-2);\n}\n.manual-result {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: var(--se-space-2) var(--se-space-3);\n  background: rgba(255, 255, 255, 0.03);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  border-radius: var(--se-radius-sm);\n}\n.result-overlay {\n  position: fixed;\n  inset: 0;\n  z-index: 100;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: var(--se-space-3);\n  padding: var(--se-space-4);\n  text-align: center;\n}\n.result-overlay.granted {\n  background: #0d5c2e;\n}\n.result-overlay.denied {\n  background: #7a1f1f;\n}\n.result-overlay h1 {\n  color: #fff;\n  font-size: 28px;\n}\n.result-overlay .result-photo {\n  width: 140px;\n  height: 140px;\n  border-radius: 50%;\n  object-fit: cover;\n  border: 3px solid #fff;\n  cursor: zoom-in;\n}\n.result-overlay .member-name {\n  color: #fff;\n  font-size: 20px;\n  font-weight: 700;\n  margin: 0;\n}\n.result-overlay .reason,\n.result-overlay .plan,\n.result-overlay .expiry {\n  color: rgba(255, 255, 255, 0.85);\n  margin: 0;\n}\n.result-overlay .certificate-status {\n  margin: var(--se-space-1) 0 0;\n  font-size: 12px;\n  color: rgba(255, 255, 255, 0.65);\n  text-transform: uppercase;\n  letter-spacing: 0.03em;\n}\n.result-overlay button {\n  margin-top: var(--se-space-3);\n  background: #fff;\n}\n.photo-lightbox {\n  position: fixed;\n  inset: 0;\n  z-index: 300;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: rgba(0, 0, 0, 0.92);\n  cursor: zoom-out;\n}\n.photo-lightbox img {\n  max-width: 92vw;\n  max-height: 92vh;\n  border-radius: var(--se-radius-md);\n  object-fit: contain;\n}\n/*# sourceMappingURL=check-in.component.css.map */\n"] }]
+  }], () => [{ type: SupabaseService }, { type: AuthService }, { type: MockBackendService }, { type: ActivatedRoute }], { videoElement: [{
     type: ViewChild,
     args: ["video"]
   }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CheckInComponent, { className: "CheckInComponent", filePath: "src/app/features/staff/check-in/check-in.component.ts", lineNumber: 36 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CheckInComponent, { className: "CheckInComponent", filePath: "src/app/features/staff/check-in/check-in.component.ts", lineNumber: 52 });
 })();
 export {
   CheckInComponent
 };
-//# sourceMappingURL=chunk-BSM2OPB4.js.map
+//# sourceMappingURL=chunk-IYSPFFY7.js.map
