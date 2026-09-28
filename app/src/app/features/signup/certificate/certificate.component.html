@@ -1,0 +1,24 @@
+<div class="certificate-page">
+  <form class="card" (ngSubmit)="submit()">
+    <h1>{{ t.title }}</h1>
+    <p class="description">{{ t.description }}</p>
+
+    <label>
+      {{ t.file }}
+      <input type="file" accept="application/pdf,image/*" (change)="onFileSelected($event)" />
+    </label>
+
+    <label>
+      {{ t.expiryDate }}
+      <input type="date" name="expiryDate" [(ngModel)]="expiryDate" required />
+    </label>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <button type="submit" [disabled]="loading()">
+      {{ loading() ? t.submitting : t.submit }}
+    </button>
+  </form>
+</div>

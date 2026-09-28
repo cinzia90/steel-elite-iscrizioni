@@ -94,6 +94,15 @@ Deno.serve(async (req) => {
       });
     }
 
+    // Collega il contratto firmato in Fase 3 (creato senza subscription_id,
+    // perché il pagamento non era ancora avvenuto) alla sottoscrizione
+    // appena creata, se ce n'è uno recente ancora non collegato.
+    await admin
+      .from('contracts')
+      .update({ subscription_id: subscription.id })
+      .eq('member_id', user.id)
+      .is('subscription_id', null);
+
     const planForBilling: PlanForBilling = {
       id: plan.id,
       name: plan.name,

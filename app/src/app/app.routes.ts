@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { roleGuard } from './core/guards/role.guard';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,17 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'iscriviti/certificato',
+    loadComponent: () =>
+      import('./features/signup/certificate/certificate.component').then((m) => m.CertificateComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'iscriviti/contratto',
+    loadComponent: () => import('./features/signup/contract/contract.component').then((m) => m.ContractComponent),
+    canActivate: [authGuard],
+  },
+  {
     path: 'iscriviti/pagamento',
     loadComponent: () => import('./features/signup/payment/payment.component').then((m) => m.PaymentComponent),
     canActivate: [authGuard],
@@ -30,6 +42,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/signup/payment-pending/payment-pending.component').then((m) => m.PaymentPendingComponent),
     canActivate: [authGuard],
+  },
+  {
+    path: 'admin/contratti',
+    loadComponent: () =>
+      import('./features/admin/contracts/admin-contracts.component').then((m) => m.AdminContractsComponent),
+    canActivate: [roleGuard(['admin'])],
   },
   {
     path: '',

@@ -95,7 +95,7 @@ export class ProfileComponent {
         throw updateError;
       }
 
-      this.router.navigateByUrl('/iscriviti/pagamento');
+      this.router.navigateByUrl('/iscriviti/certificato');
     } catch {
       this.errorMessage.set(this.t.errorGeneric);
     } finally {

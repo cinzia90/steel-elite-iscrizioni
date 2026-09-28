@@ -1,0 +1,41 @@
+<div class="contract-page">
+  <div class="card">
+    <h1>{{ t.title }}</h1>
+
+    <label class="checkbox">
+      <input type="checkbox" name="acceptedTerms" [(ngModel)]="acceptedTerms" />
+      {{ t.acceptContract }}
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" name="acceptedRules" [(ngModel)]="acceptedRules" />
+      {{ t.acceptRules }}
+    </label>
+
+    <label class="checkbox">
+      <input type="checkbox" name="acceptedPrivacy" [(ngModel)]="acceptedPrivacy" />
+      {{ t.acceptPrivacy }}
+    </label>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    @if (!otpSent()) {
+      <button type="button" [disabled]="!canSendOtp || sendingOtp()" (click)="sendOtp()">
+        {{ sendingOtp() ? t.sendingOtp : t.sendOtp }}
+      </button>
+    } @else {
+      <p class="otp-sent">{{ t.otpSentLabel }}</p>
+
+      <label>
+        {{ t.otpCode }}
+        <input type="text" inputmode="numeric" maxlength="6" name="otpCode" [(ngModel)]="otpCode" />
+      </label>
+
+      <button type="button" [disabled]="verifyingOtp() || otpCode.length !== 6" (click)="verifyOtp()">
+        {{ verifyingOtp() ? t.verifyingOtp : t.verifyOtp }}
+      </button>
+    }
+  </div>
+</div>
